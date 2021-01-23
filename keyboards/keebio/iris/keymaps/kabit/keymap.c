@@ -238,7 +238,7 @@ layer_state_t layer_state_set_user(layer_state_t state) {
             break;
         default:
             break;
-	layer_clear()
+	layer_clear();
     }
-    return state
+    return state;
 }
