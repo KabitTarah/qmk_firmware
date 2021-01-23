@@ -17,7 +17,7 @@ const rgblight_segment_t PROGMEM my_rgb_prog_layers[] = RGBLIGHT_LAYER_SEGMENTS(
     {1, 12, HSV_GREEN}
 );
 const rgblight_segment_t PROGMEM my_rgb_ger_layers[] = RGBLIGHT_LAYER_SEGMENTS(
-    {1, 12, HSV_BLUE},
+    {1, 12, HSV_BLUE}
 );
 
 const rgblight_segment_t* const PROGMEM my_rgb_layers[] = RGBLIGHT_LAYERS_LIST(
