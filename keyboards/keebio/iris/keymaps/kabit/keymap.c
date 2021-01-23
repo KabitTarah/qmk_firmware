@@ -48,17 +48,17 @@ enum layer_names {
 
 #define DEAD    KC_NO
 
-#define M_ENG   MO(_ENG)
+#define M_ENG   DO(_ENG)
 #define L_E1    TT(_ENG1)
 #define L_E2    TT(_ENG2)
 #define L_E3    TT(_ENG3)
 
-#define M_PROG  MO(_PROG)
+#define M_PROG  DO(_PROG)
 #define L_P1    TT(_PROG1)
 #define L_P2    TT(_PROG2)
 #define L_P3    TT(_PROG3)
 
-#define M_GER   MO(_GER)
+#define M_GER   DO(_GER)
 #define L_G1    TT(_GER1)
 #define L_G2    TT(_GER2)
 #define L_G3    TT(_GER3)
@@ -222,28 +222,20 @@ void keyboard_post_init_user(void) {
     rgblight_layers = my_rgb_layers;
 }
 
-layer_state_t layer_state_set_user(layer_state_t state) {
+layer_state_t default_layer_state_set_user(layer_state_t state) {
+    layer_clear();
     switch (get_highest_layer(state)) {
         case _ENG:
-	    layer_clear();
-	    default_layer_set(_ENG);
-	    layer_state_set(_ENG);
             rgblight_set_layer_state(0, true);
 	    rgblight_set_layer_state(1, false);
 	    rgblight_set_layer_state(2, false);
             break;
         case _PROG:
-	    layer_clear();
-	    default_layer_set(_PROG);
-	    layer_state_set(_PROG);
             rgblight_set_layer_state(0, false);
 	    rgblight_set_layer_state(1, true);
 	    rgblight_set_layer_state(2, false);
             break;
         case _GER:
-	    layer_clear();
-	    default_layer_set(_GER);
-	    layer_state_set(_GER);
             rgblight_set_layer_state(0, false);
 	    rgblight_set_layer_state(1, false);
 	    rgblight_set_layer_state(2, true);
