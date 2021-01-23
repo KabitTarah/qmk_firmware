@@ -230,13 +230,13 @@ void keyboard_post_init_user(void) {
 layer_state_t layer_state_set_user(layer_state_t state) {
     switch (get_highest_layer(state)) {
         case _ENG:
-            rgblight_set_layer_state(0, true)
+            rgblight_set_layer_state(0, true);
             break;
         case _PROG:
-            rgblight_set_layer_state(1, true)
+            rgblight_set_layer_state(1, true);
             break;
         case _GER:
-            rgblight_set_layer_state(2, true)
+            rgblight_set_layer_state(2, true);
             break;
         default:
             break;
