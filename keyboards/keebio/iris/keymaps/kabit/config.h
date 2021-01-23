@@ -1,0 +1,1 @@
+#define UCIS_MAX_CODE_POINTS 5

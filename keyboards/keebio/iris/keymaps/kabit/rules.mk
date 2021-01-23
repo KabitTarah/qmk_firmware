@@ -1,0 +1,3 @@
+UNICODE_ENABLE = yes        # Unicode
+UNICODEMAP_ENABLE = yes
+UCIS_ENABLE = yes
