@@ -11,18 +11,13 @@
 
 // RGB Underglow testing
 const rgblight_segment_t PROGMEM my_rgb_eng_layers[] = RGBLIGHT_LAYER_SEGMENTS(
-    {1, 3, HSV_RED},
-    {7, 3, HSV_BLUE}
+    {1, 12, HSV_RED}
 );
 const rgblight_segment_t PROGMEM my_rgb_prog_layers[] = RGBLIGHT_LAYER_SEGMENTS(
-    {4, 3, HSV_BLUE},
-    {10, 3, HSV_GREEN}
+    {1, 12, HSV_GREEN}
 );
 const rgblight_segment_t PROGMEM my_rgb_ger_layers[] = RGBLIGHT_LAYER_SEGMENTS(
-    {1, 2, HSV_RED},
-    {5, 2, HSV_GREEN},
-    {8, 2, HSV_RED},
-    {12, 1, HSV_GREEN}
+    {1, 12, HSV_BLUE},
 );
 
 const rgblight_segment_t* const PROGMEM my_rgb_layers[] = RGBLIGHT_LAYERS_LIST(
