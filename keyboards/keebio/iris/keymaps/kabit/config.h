@@ -1,1 +1,2 @@
 #define UCIS_MAX_CODE_POINTS 5
+#define RGBLIGHT_LAYERS 8
