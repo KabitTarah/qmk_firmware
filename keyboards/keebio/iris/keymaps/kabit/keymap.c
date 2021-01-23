@@ -48,17 +48,17 @@ enum layer_names {
 
 #define DEAD    KC_NO
 
-#define M_ENG   DO(_ENG)
+#define M_ENG   DF(_ENG)
 #define L_E1    TT(_ENG1)
 #define L_E2    TT(_ENG2)
 #define L_E3    TT(_ENG3)
 
-#define M_PROG  DO(_PROG)
+#define M_PROG  DF(_PROG)
 #define L_P1    TT(_PROG1)
 #define L_P2    TT(_PROG2)
 #define L_P3    TT(_PROG3)
 
-#define M_GER   DO(_GER)
+#define M_GER   DF(_GER)
 #define L_G1    TT(_GER1)
 #define L_G2    TT(_GER2)
 #define L_G3    TT(_GER3)
