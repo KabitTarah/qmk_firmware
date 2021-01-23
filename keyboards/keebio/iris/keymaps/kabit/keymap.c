@@ -225,20 +225,29 @@ void keyboard_post_init_user(void) {
 layer_state_t layer_state_set_user(layer_state_t state) {
     switch (get_highest_layer(state)) {
         case _ENG:
+	    layer_clear();
 	    default_layer_set(_ENG);
+	    layer_state_set(_ENG);
             rgblight_set_layer_state(0, true);
+	    rgblight_set_layer_state(1, false);
+	    rgblight_set_layer_state(2, false);
             break;
         case _PROG:
+	    layer_clear();
 	    default_layer_set(_PROG);
-            rgblight_set_layer_state(1, true);
+	    layer_state_set(_PROG);
+            rgblight_set_layer_state(0, false);
+	    rgblight_set_layer_state(1, true);
+	    rgblight_set_layer_state(2, false);
             break;
         case _GER:
+	    layer_clear();
 	    default_layer_set(_GER);
-            rgblight_set_layer_state(2, true);
+	    layer_state_set(_GER);
+            rgblight_set_layer_state(0, false);
+	    rgblight_set_layer_state(1, false);
+	    rgblight_set_layer_state(2, true);
             break;
-        default:
-            break;
-	layer_clear();
     }
     return state;
 }
