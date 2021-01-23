@@ -1,29 +1,5 @@
 #include QMK_KEYBOARD_H
 
-const uint32_t skin = 0x1F3FB;
-
-const qk_ucis_symbol_t ucis_symbol_table[] = UCIS_TABLE(
-    UCIS_SYM("grin", 0x1F600),
-    UCIS_SYM("rofl", 0x1F923),
-    UCIS_SYM("tongue", 0x1F61B),
-    UCIS_SYM("yum", 0x1F60B),
-    UCIS_SYM("nosprise", 0x1F610),
-    UCIS_SYM("hmm", 0x1F914),
-    UCIS_SYM("eyeroll", 0x1F644),
-    UCIS_SYM("owo", 0x1F633),
-    UCIS_SYM("swhappy", 0x1F605),
-    UCIS_SYM("swsad", 0x1F613),
-    UCIS_SYM("angry", 0x1F621),
-    UCIS_SYM("ebil", 0x1F608),
-    UCIS_SYM("revhrt", 0x1F49E),
-    UCIS_SYM("rabbit", 0x1F430),
-    UCIS_SYM("rabbit2", 0x1F407),
-    UCIS_SYM("tada", 0x1F389),
-    UCIS_SYM("thumbsup", 0x1F44D, skin),
-    UCIS_SYM("trans", 0x1F3F3, 0xFE0F, 0x200D, 0x26A7, 0xFE0F),
-    UCIS_SYM("gay", 0x1F3F3, 0xFE0F, 0x200D, 0x1F308)
-);
-
 #define U_ESZ   UC(0xDF)
 #define U_UMA   UC(0xE4)
 #define U_UME   UC(0xEB)
