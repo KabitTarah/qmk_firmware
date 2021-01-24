@@ -5,3 +5,6 @@
 #define RGBLED_NUM 12
 #define RGBLIGHT_HUE_STEP 8
 #define RGBLIGHT_SAT_STEP 8
+#define ENCODERS_PAD_A { B2 }
+#define ENCODERS_PAD_B { B3 }
+#define ENCODER_RESOLUTION 4

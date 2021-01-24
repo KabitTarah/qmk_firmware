@@ -1,4 +1,5 @@
 #include QMK_KEYBOARD_H
+#include "print.h"
 
 #define U_ESZ   UC(0xDF)
 #define U_UMA   UC(0xE4)
@@ -26,19 +27,33 @@ const rgblight_segment_t* const PROGMEM my_rgb_layers[] = RGBLIGHT_LAYERS_LIST(
     my_rgb_ger_layers
 );
 
-enum layer_names {
-    _ENG,
-    _ENG1,
-    _ENG2,
-    _ENG3,
-    _PROG,
-    _PROG1,
-    _PROG2,
-    _PROG3,
-    _GER,
-    _GER1,
-    _GER2,
-    _GER3
+//                                           _ L_G3
+//                                          / _ L_G2
+//                                          |/ _ L_G1
+//                                          ||/ _ M_GER
+//                                          |||/
+//                                          ||||  _ L_P3
+//                                          |||| / _ L_P2
+//                                          |||| |/ _ L_P1
+//                                          |||| ||/ _ M_PROG
+//                                          |||| |||/
+//                                          |||| ||||  _ L_E3
+//                                          |||| |||| / _ L_E2
+//                                          |||| |||| |/ _ L_E1
+//                                          |||| |||| ||/ _ M_ENG
+enum layer_names {   //                     |||| |||| |||/
+    _ENG,        //  M_ENG Base: 0x001 = 0b 0000 0000 0001
+    _ENG1,       //        L_E1: 0x002 = 0b 0000 0000 0010
+    _ENG2,       //        L_E2: 0x003 = 0b 0000 0000 0100
+    _ENG3,       //        L_E3: 0x004 = 0b 0000 0000 1000
+    _PROG,       // M_PROG Base: 0x005 = 0b 0000 0001 0000
+    _PROG1,      //        L_P1: 0x006 = 0b 0000 0010 0000
+    _PROG2,      //        L_P2: 0x007 = 0b 0000 0100 0000
+    _PROG3,      //        L_P3: 0x008 = 0b 0000 1000 0000
+    _GER,        //  M_GER BASE: 0x009 = 0b 0001 0000 0000
+    _GER1,       //        L_G1: 0x00A = 0b 0010 0000 0000
+    _GER2,       //        L_G2: 0x00B = 0b 0100 0000 0000
+    _GER3        //        L_G3: 0x00C = 0b 1000 0000 0000
 };
 
 #define DEAD    KC_NO
@@ -68,7 +83,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
       KC_TAB,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                               KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-      KC_LCTL, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    DEAD,             DEAD,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_BSLS,
+      KC_LCTL, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_MUTE,          DEAD,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_BSLS,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
                                      KC_LGUI, KC_LSFT, KC_ENT,                    KC_SPC,  KC_RALT, L_E1
   //                               └────────┴────────┴────────┘                 └────────┴────────┴────────┘
@@ -80,7 +95,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
       XXXXXXX, KC_UP,   XXXXXXX, XXXXXXX, XXXXXXX, KC_PGDN,                            XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_EQL,  KC_HOME,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-      KC_LEFT, KC_DOWN, KC_RGHT, KC_LALT, KC_LBRC, KC_DEL,  DEAD,             DEAD,    KC_RCTL, KC_RBRC, XXXXXXX, XXXXXXX, KC_MINS, KC_END,
+      KC_LEFT, KC_DOWN, KC_RGHT, KC_LALT, KC_LBRC, KC_DEL,  _______,          DEAD,    KC_RCTL, KC_RBRC, XXXXXXX, XXXXXXX, KC_MINS, KC_END,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
                                      _______, _______, _______,                   _______, _______, _______
   //                               └────────┴────────┴────────┘                 └────────┴────────┴────────┘
@@ -118,7 +133,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
       KC_TAB,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                               KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-      KC_LCTL, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    DEAD,             DEAD,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_BSLS,
+      KC_LCTL, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_MUTE,          DEAD,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_BSLS,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
                                      KC_LGUI, KC_LSFT, KC_ENT,                    KC_SPC,  KC_RALT, L_P1
   //                               └────────┴────────┴────────┘                 └────────┴────────┴────────┘
@@ -169,7 +184,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
       KC_TAB,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                               KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-      KC_LCTL, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    DEAD,             DEAD,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_BSLS,
+      KC_LCTL, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_MUTE,          DEAD,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_BSLS,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
                                      KC_LGUI, KC_LSFT, KC_ENT,                    KC_SPC,  KC_RALT, L_G1
   //                               └────────┴────────┴────────┘                 └────────┴────────┴────────┘
@@ -215,9 +230,21 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 void keyboard_post_init_user(void) {
     // Enable the LED layers
     rgblight_layers = my_rgb_layers;
+    debug_enable = true;
+    //debug_matrix = true;
+}
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    dprintf("keypress layer state %X\n", layer_state);
+    dprintf("keypress default layer %X\n", default_layer_state);
+    dprintf("keypress high layer %X\n\n", get_highest_layer(layer_state));
+    return true;
 }
 
 layer_state_t default_layer_state_set_user(layer_state_t state) {
+    dprintf("default layer change state %X\n", layer_state);
+    dprintf("keypress default layer %X\n", default_layer_state);
+    dprintf("default layer change from: %X\n\n", get_highest_layer(state));
     layer_clear();
     switch (get_highest_layer(state)) {
         case _ENG:
@@ -237,4 +264,69 @@ layer_state_t default_layer_state_set_user(layer_state_t state) {
             break;
     }
     return state;
+}
+
+void encoder_update_user(uint8_t index, bool clockwise) {
+    dprintf("Encoder toggle layer state %X\n", layer_state);
+    dprintf("keypress default layer %X\n", default_layer_state);
+    dprintf("Encoder toggle from %X\n\n", get_highest_layer(layer_state));
+    switch (get_highest_layer(layer_state)) {
+        case _ENG:
+	case _PROG:
+	case _GER:
+	    if (clockwise) {
+	        tap_code(KC_VOLU);
+	    } else {
+	        tap_code(KC_VOLD);
+	    }
+	    break;
+	case _ENG1:
+	case _PROG1:
+	case _GER1:
+	    if (clockwise) {
+		tap_code(KC_PGDN);
+	    } else {
+		tap_code(KC_PGUP);
+	    }
+	    break;
+	case _ENG2:
+	    if (clockwise) {
+	        dprintf("Going to _PROG ...");
+		default_layer_set(_PROG);
+		rgblight_set_layer_state(1, true);
+		layer_clear();
+	    } else {
+	        dprintf("Going to _GER ...");
+		default_layer_set(_GER);
+		rgblight_set_layer_state(2, true);
+		layer_clear();
+	    }
+	    break;
+	case _PROG2:
+	    if (clockwise) {
+	        dprintf("Going to _GER ...");
+		default_layer_set(_GER);
+		rgblight_set_layer_state(2, true);
+		layer_clear();
+	    } else {
+	        dprintf("Going to _ENG ...");
+		default_layer_set(_ENG);
+		rgblight_set_layer_state(0, true);
+		layer_clear();
+	    }
+	    break;
+	case _GER2:
+	    if (clockwise) {
+	        dprintf("Going to _ENG ...");
+		default_layer_set(_ENG);
+		rgblight_set_layer_state(0, true);
+		layer_clear();
+	    } else {
+	        dprintf("Going to _PROG ...");
+		default_layer_set(_PROG);
+		rgblight_set_layer_state(1, true);
+		layer_clear();
+	    }
+	    break;
+    }
 }
