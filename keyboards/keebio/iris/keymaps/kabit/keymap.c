@@ -21,12 +21,6 @@
  *
  ********************************************************************************/
 
-/* 
- * CURRENT ISSUES:
- *   - I activate Layer 2 (from current base) to shift to a new base layer
- *     - When setting the new state, the base layer is set, not the base + 2
- *     - This means getting stuck in a mode - further debugs needed
- */
 #include QMK_KEYBOARD_H
 
 #define U_ESZ   UC(0xDF)
@@ -39,22 +33,54 @@
 #define U_UMY   UC(0xFF)
 
 // RGB Underglow
-const rgblight_segment_t PROGMEM my_rgb_eng_layers[] = RGBLIGHT_LAYER_SEGMENTS(
-    {1, 12, HSV_RED}
-);
-const rgblight_segment_t PROGMEM my_rgb_prog_layers[] = RGBLIGHT_LAYER_SEGMENTS(
-    {1, 12, HSV_GREEN}
-);
-const rgblight_segment_t PROGMEM my_rgb_ger_layers[] = RGBLIGHT_LAYER_SEGMENTS(
-    {1, 12, HSV_BLUE}
-);
+// LEDs are in matrix:
+// 2  1  0 .   6  7  8
+// 3  4  5 .   11 10 9
+//
+const int PROGMEM _eng_hsv[12][3] = {
+    {277, 0, 76},       // white
+    {301, 43, 100},     // pink
+    {194, 100, 100},    // blue
+    {194, 100, 100},
+    {301, 43, 100},
+    {277, 0, 76},
+    {277, 0, 76},
+    {301, 43, 100},
+    {194, 100, 100},
+    {194, 100, 100},
+    {301, 43, 100},
+    {277, 0, 76}
+};
 
-const rgblight_segment_t* const PROGMEM my_rgb_layers[] = RGBLIGHT_LAYERS_LIST(
-    my_rgb_eng_layers,
-    my_rgb_prog_layers,
-    my_rgb_ger_layers
-);
+const int PROGMEM _prog_hsv[12][3] = {
+    {99, 40, 82},       // green
+    {278, 48, 82},      // purple
+    {278, 48, 82},      // purple
+    {99, 40, 82},       // green
+    {278, 48, 82},      // purple
+    {99, 40, 82},       // green
+    {99, 40, 82},       // green
+    {278, 48, 82},      // purple
+    {278, 48, 82},      // purple
+    {99, 40, 82},       // green
+    {278, 48, 82},      // purple
+    {99, 40, 82}        // green
+};
 
+const int PROGMEM _ger_hsv[12][3] = {
+    {60, 86, 94},     // yellow
+    {108, 98, 94},    // green
+    {244, 100, 94},   // blue
+    {278, 100, 94},   // purple
+    {278, 100, 94},   // purple
+    {244, 100, 94},   // blue
+    {26, 100, 94},    // orange
+    {0, 100, 82},     // red
+    {0, 100, 82},     // red
+    {26, 100, 94},    // orange
+    {60, 86, 94},     // yellow
+    {108, 98, 94}     // green
+};
 
 //                                           _ L_G3
 //                                          / _ L_G2
@@ -159,7 +185,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                      _______, _______, _______,                   _______, _______, _______
   //                               └────────┴────────┴────────┘                 └────────┴────────┴────────┘
   ),
-  
+
   [_PROG] = LAYOUT(
 //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
       KC_ESC,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                               KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_BSPC,
@@ -262,35 +288,42 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   )
 };
 
+void lights_on(layer_state_t layer) {
+    for (int i = 0; i < 12; i++) {
+        switch (layer) {
+            case _ENG:
+                rgblight_sethsv_at(_eng_hsv[i][0], _eng_hsv[i][1], _eng_hsv[i][2], i);
+        };
+    };
+}
+
 void keyboard_post_init_user(void) {
     // Enable the LED layers
-    rgblight_layers = my_rgb_layers;
+    lights_on(_ENG);
+    //debug_enable = true;
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-	dprintf("\nDLS: %X CLS: %X HL: %X\n", default_layer_state, layer_state, get_highest_layer(layer_state));
+    dprintf("KL: kc: 0x%04X, col: %u, row: %u, pressed: %b, time: %u, interrupt: %b, count: %u\n", keycode, record->event.key.col, record->event.key.row, record->event.pressed, record->event.time, record->tap.interrupted, record->tap.count);
 	return true;
 }
 
 layer_state_t default_layer_state_set_user(layer_state_t state) {
     layer_clear();
+    lights_on(get_highest_layer(state));
+    /*
     switch (get_highest_layer(state)) {
         case _ENG:
-            rgblight_set_layer_state(0, true);
-	    rgblight_set_layer_state(1, false);
-	    rgblight_set_layer_state(2, false);
+            lights_on(_eng_hsv);
             break;
         case _PROG:
-            rgblight_set_layer_state(0, false);
-	    rgblight_set_layer_state(1, true);
-	    rgblight_set_layer_state(2, false);
+            lights_on(_prog_hsv);
             break;
         case _GER:
-            rgblight_set_layer_state(0, false);
-	    rgblight_set_layer_state(1, false);
-	    rgblight_set_layer_state(2, true);
+            lights_on(_ger_hsv);
             break;
     }
+    */
     return state;
 }
 
