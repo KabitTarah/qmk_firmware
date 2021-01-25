@@ -265,7 +265,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 void keyboard_post_init_user(void) {
     // Enable the LED layers
     rgblight_layers = my_rgb_layers;
-    debug_enable = true;
+}
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+	dprintf("\nDLS: %X CLS: %X HL: %X\n", default_layer_state, layer_state, get_highest_layer(layer_state));
+	return true;
 }
 
 layer_state_t default_layer_state_set_user(layer_state_t state) {
@@ -288,6 +292,35 @@ layer_state_t default_layer_state_set_user(layer_state_t state) {
             break;
     }
     return state;
+}
+
+layer_state_t layer_state_set_user(layer_state_t state) {
+    // Any time we have a layer state transition, ensure all layers are within the current base layer set. Turn off all layers that are not
+    // group_mask must have one bit per number of layers per group
+    layer_state_t group_mask = 0xF;
+
+    // need to create a bitwise & mask for all allowed layers
+    layer_state_t def_layer = default_layer_state;
+    layer_state_t shift = 0;
+    // Count how far over the default layer is
+    while (def_layer > 0) {
+        def_layer = def_layer >> 1;
+	shift = shift + 1;
+    }
+    // Shift the group mask the same distance
+    layer_state_t mask = group_mask << (shift - 1);
+    // Apply the bitmask. This cleans out layers left "on" after the TT(2+base) resets
+    layer_state_t state_mask = state & mask;
+
+    // If artifacts are left over the applied mask and state will be different. So clear the bad ones out
+    // there is a built in for this (layer_and(mask)) but since we're in layer_state_set_user() we have to
+    // do all the work ourselves anyway :P -- and this is the best place to check for it. The higher level
+    // function shouldn't change anything if nothing changes, but it does.
+    if (state_mask != state) {
+        layer_state_set(state_mask);
+    }
+
+    return state_mask;
 }
 
 void encoder_update_user(uint8_t index, bool clockwise) {
@@ -324,30 +357,24 @@ void encoder_update_user(uint8_t index, bool clockwise) {
 	    change = true;
 	    if (clockwise) {
                 change_to = X_PROG;
-		shift = _PROG;
 	    } else {
                 change_to = X_GER;
-		shift = _GER;
 	    }
 	    break;
 	case _PROG2:
 	    change = true;
 	    if (clockwise) {
                 change_to = X_GER;
-		shift = _GER;
 	    } else {
                 change_to = X_ENG;
-		shift = _ENG;
 	    }
 	    break;
 	case _GER2:
 	    change = true;
 	    if (clockwise) {
                 change_to = X_ENG;
-		shift = _ENG;
 	    } else {
                 change_to = X_PROG;
-		shift = _PROG;
 	    }
 	    break;
     }
