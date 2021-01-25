@@ -1,5 +1,33 @@
+/********************************************************************************
+ *
+ * Kabit keymap for Iris rev4
+ * Built by Tarah Tamayo, github @KabitTarah
+ *
+ * Board has three layer maps:
+ *   English     - US standard mapping with a bit of fun on upper layers
+ *               - Backlighting: Trans flag
+ *
+ *   Programming - Layout optimized for programming / scripting
+ *               - Backlighting: Purple & Green (Kabit colors)
+ *
+ *   German      - I'm learning German and wanted something easier to use
+ *               - Backlighting: Rainbow
+ *
+ * Encoder (In each layer set):
+ *   L0 - Volume / Press to mute
+ *   L1 - Line up / down
+ *   L2 - Base layer change
+ *   L3 - Page up / down
+ *
+ ********************************************************************************/
+
+/* 
+ * CURRENT ISSUES:
+ *   - I activate Layer 2 (from current base) to shift to a new base layer
+ *     - When setting the new state, the base layer is set, not the base + 2
+ *     - This means getting stuck in a mode - further debugs needed
+ */
 #include QMK_KEYBOARD_H
-#include "print.h"
 
 #define U_ESZ   UC(0xDF)
 #define U_UMA   UC(0xE4)
@@ -10,7 +38,7 @@
 #define U_THRN  UC(0xFE)
 #define U_UMY   UC(0xFF)
 
-// RGB Underglow testing
+// RGB Underglow
 const rgblight_segment_t PROGMEM my_rgb_eng_layers[] = RGBLIGHT_LAYER_SEGMENTS(
     {1, 12, HSV_RED}
 );
@@ -27,6 +55,7 @@ const rgblight_segment_t* const PROGMEM my_rgb_layers[] = RGBLIGHT_LAYERS_LIST(
     my_rgb_ger_layers
 );
 
+
 //                                           _ L_G3
 //                                          / _ L_G2
 //                                          |/ _ L_G1
@@ -37,37 +66,43 @@ const rgblight_segment_t* const PROGMEM my_rgb_layers[] = RGBLIGHT_LAYERS_LIST(
 //                                          |||| |/ _ L_P1
 //                                          |||| ||/ _ M_PROG
 //                                          |||| |||/
-//                                          |||| ||||  _ L_E3
-//                                          |||| |||| / _ L_E2
-//                                          |||| |||| |/ _ L_E1
-//                                          |||| |||| ||/ _ M_ENG
-enum layer_names {   //                     |||| |||| |||/
-    _ENG,        //  M_ENG Base: 0x001 = 0b 0000 0000 0001
-    _ENG1,       //        L_E1: 0x002 = 0b 0000 0000 0010
-    _ENG2,       //        L_E2: 0x003 = 0b 0000 0000 0100
-    _ENG3,       //        L_E3: 0x004 = 0b 0000 0000 1000
-    _PROG,       // M_PROG Base: 0x005 = 0b 0000 0001 0000
-    _PROG1,      //        L_P1: 0x006 = 0b 0000 0010 0000
-    _PROG2,      //        L_P2: 0x007 = 0b 0000 0100 0000
-    _PROG3,      //        L_P3: 0x008 = 0b 0000 1000 0000
-    _GER,        //  M_GER BASE: 0x009 = 0b 0001 0000 0000
-    _GER1,       //        L_G1: 0x00A = 0b 0010 0000 0000
-    _GER2,       //        L_G2: 0x00B = 0b 0100 0000 0000
-    _GER3        //        L_G3: 0x00C = 0b 1000 0000 0000
+//                       Layer Mask _       |||| ||||  _ L_E3       _ Layer #
+//                                   \      |||| |||| / _ L_E2     /
+//                                   |      |||| |||| |/ _ L_E1    |
+//                                   |      |||| |||| ||/ _ M_ENG  |
+enum layer_names {   //              |      |||| |||| |||/         |
+    _ENG,        //  M_ENG Base: 0x001 = 0b 0000 0000 0001    ---> 0
+    _ENG1,       //        L_E1: 0x002 = 0b 0000 0000 0010    ---> 1
+    _ENG2,       //        L_E2: 0x004 = 0b 0000 0000 0100    ---> 2
+    _ENG3,       //        L_E3: 0x008 = 0b 0000 0000 1000    ---> 3
+    _PROG,       // M_PROG Base: 0x010 = 0b 0000 0001 0000    ---> 4
+    _PROG1,      //        L_P1: 0x020 = 0b 0000 0010 0000    ---> 5
+    _PROG2,      //        L_P2: 0x040 = 0b 0000 0100 0000    ---> 6
+    _PROG3,      //        L_P3: 0x080 = 0b 0000 1000 0000    ---> 7
+    _GER,        //  M_GER BASE: 0x100 = 0b 0001 0000 0000    ---> 8
+    _GER1,       //        L_G1: 0x200 = 0b 0010 0000 0000    ---> 9
+    _GER2,       //        L_G2: 0x400 = 0b 0100 0000 0000    ---> 10
+    _GER3        //        L_G3: 0x800 = 0b 1000 0000 0000    ---> 11
 };
+
+// Base Layer Masks
+#define X_ENG	1 << _ENG
+#define X_PROG	1 << _PROG
+#define X_GER	1 << _GER
 
 #define DEAD    KC_NO
 
+// Layer Key Macros
 #define M_ENG   DF(_ENG)
 #define L_E1    TT(_ENG1)
 #define L_E2    TT(_ENG2)
 #define L_E3    TT(_ENG3)
-
+//
 #define M_PROG  DF(_PROG)
 #define L_P1    TT(_PROG1)
 #define L_P2    TT(_PROG2)
 #define L_P3    TT(_PROG3)
-
+//
 #define M_GER   DF(_GER)
 #define L_G1    TT(_GER1)
 #define L_G2    TT(_GER2)
@@ -231,20 +266,9 @@ void keyboard_post_init_user(void) {
     // Enable the LED layers
     rgblight_layers = my_rgb_layers;
     debug_enable = true;
-    //debug_matrix = true;
-}
-
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    dprintf("keypress layer state %X\n", layer_state);
-    dprintf("keypress default layer %X\n", default_layer_state);
-    dprintf("keypress high layer %X\n\n", get_highest_layer(layer_state));
-    return true;
 }
 
 layer_state_t default_layer_state_set_user(layer_state_t state) {
-    dprintf("default layer change state %X\n", layer_state);
-    dprintf("keypress default layer %X\n", default_layer_state);
-    dprintf("default layer change from: %X\n\n", get_highest_layer(state));
     layer_clear();
     switch (get_highest_layer(state)) {
         case _ENG:
@@ -267,10 +291,17 @@ layer_state_t default_layer_state_set_user(layer_state_t state) {
 }
 
 void encoder_update_user(uint8_t index, bool clockwise) {
-    dprintf("Encoder toggle layer state %X\n", layer_state);
-    dprintf("keypress default layer %X\n", default_layer_state);
-    dprintf("Encoder toggle from %X\n\n", get_highest_layer(layer_state));
-    switch (get_highest_layer(layer_state)) {
+    // Testing shows that layer state returns 0 if only the default is enabled, even if the default layer is not 0
+    layer_state_t kabit_layer = layer_state;
+    if (kabit_layer < default_layer_state) {
+        kabit_layer = default_layer_state;
+    }
+    kabit_layer = get_highest_layer(kabit_layer);
+    //layer_state_t diff = kabit_layer - get_highest_layer(default_layer_state) + 1;
+
+    bool change = false;
+    layer_state_t change_to;
+    switch (kabit_layer) {
         case _ENG:
 	case _PROG:
 	case _GER:
@@ -290,43 +321,39 @@ void encoder_update_user(uint8_t index, bool clockwise) {
 	    }
 	    break;
 	case _ENG2:
+	    change = true;
 	    if (clockwise) {
-	        dprintf("Going to _PROG ...");
-		default_layer_set(_PROG);
-		rgblight_set_layer_state(1, true);
-		layer_clear();
+                change_to = X_PROG;
+		shift = _PROG;
 	    } else {
-	        dprintf("Going to _GER ...");
-		default_layer_set(_GER);
-		rgblight_set_layer_state(2, true);
-		layer_clear();
+                change_to = X_GER;
+		shift = _GER;
 	    }
 	    break;
 	case _PROG2:
+	    change = true;
 	    if (clockwise) {
-	        dprintf("Going to _GER ...");
-		default_layer_set(_GER);
-		rgblight_set_layer_state(2, true);
-		layer_clear();
+                change_to = X_GER;
+		shift = _GER;
 	    } else {
-	        dprintf("Going to _ENG ...");
-		default_layer_set(_ENG);
-		rgblight_set_layer_state(0, true);
-		layer_clear();
+                change_to = X_ENG;
+		shift = _ENG;
 	    }
 	    break;
 	case _GER2:
+	    change = true;
 	    if (clockwise) {
-	        dprintf("Going to _ENG ...");
-		default_layer_set(_ENG);
-		rgblight_set_layer_state(0, true);
-		layer_clear();
+                change_to = X_ENG;
+		shift = _ENG;
 	    } else {
-	        dprintf("Going to _PROG ...");
-		default_layer_set(_PROG);
-		rgblight_set_layer_state(1, true);
-		layer_clear();
+                change_to = X_PROG;
+		shift = _PROG;
 	    }
 	    break;
+    }
+    if (change) {
+        default_layer_set(change_to);
+	default_layer_state_set_user(change_to);
+	layer_state_set(change_to);
     }
 }
