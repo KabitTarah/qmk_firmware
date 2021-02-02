@@ -9,7 +9,3 @@
 #define ENCODERS_PAD_B { B3 }
 #define ENCODER_RESOLUTION 4
 #define TAPPING_TOGGLE 2
-
-// Unicode
-#define UNICODE_SELECTED_MODES UC_MAC, UC_LNX
-#define UNICODE_CYCLE_PERSIST false
