@@ -140,13 +140,33 @@ enum layer_names {   //              |      |||| |||| |||/         |
 #define L_G2    TT(_GAME2)
 #define L_G3    TT(_GAME3)
 
+// Custom macro keys
+enum custom_keycodes {
+    DEMODSH = SAFE_RANGE
+};
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case DEMODSH:
+            if (record->event.pressed) {
+                register_code16(KC_DOWN);
+                register_code16(KC_P);
+                unregister_code16(KC_DOWN);
+            } else {
+                unregister_code16(KC_P);
+            }
+    }
+	return true;
+}
+
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_MACRO] = LAYOUT(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
-      XXXXXXX, XXXXXXX, XXXXXXX, L_M1,    L_M2,    XXXXXXX,                            DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,
+      XXXXXXX, KC_UP,   XXXXXXX, L_M1,    L_M2,    XXXXXXX,                            DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                            DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,
+      KC_LEFT, KC_DOWN, KC_RGHT, XXXXXXX, XXXXXXX, XXXXXXX,                            DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
       XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                            DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
@@ -156,9 +176,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //                               └────────┴────────┴────────┘                 └────────┴────────┴────────┘
   ), [_MACRO1] = LAYOUT(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
-      XXXXXXX, XXXXXXX, XXXXXXX, _______, L_M3,    XXXXXXX,                            DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,
+      XXXXXXX, KC_UP,   XXXXXXX, _______, L_M3,    XXXXXXX,                            DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                            DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,
+      KC_LEFT, KC_DOWN, KC_RGHT, XXXXXXX, XXXXXXX, XXXXXXX,                            DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
       XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                            DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
@@ -168,9 +188,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //                               └────────┴────────┴────────┘                 └────────┴────────┴────────┘
   ), [_MACRO2] = LAYOUT(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
-      XXXXXXX, XXXXXXX, XXXXXXX, L_M3,    _______, XXXXXXX,                            DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,
+      XXXXXXX, KC_UP,   XXXXXXX, L_M3,    _______, XXXXXXX,                            DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                            DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,
+      KC_LEFT, KC_DOWN, KC_RGHT, XXXXXXX, XXXXXXX, XXXXXXX,                            DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
       M_ANKI,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                            DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
@@ -180,9 +200,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //                               └────────┴────────┴────────┘                 └────────┴────────┴────────┘
   ), [_MACRO3] = LAYOUT(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
-      XXXXXXX, XXXXXXX, XXXXXXX, _______, _______, XXXXXXX,                            DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,
+      XXXXXXX, KC_UP,   XXXXXXX, _______, _______, XXXXXXX,                            DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                            DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,
+      KC_LEFT, KC_DOWN, KC_RGHT, XXXXXXX, XXXXXXX, XXXXXXX,                            DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
       XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                            DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
@@ -194,21 +214,21 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_ANKI] = LAYOUT(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
-      XXXXXXX, XXXXXXX, XXXXXXX, L_A1,    L_A2,    XXXXXXX,                            DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,
+      XXXXXXX, XXXXXXX, XXXXXXX, L_A1,    L_A2,    KC_4,                               DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                            DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,
+      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_3,                               DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                            DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,
+      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_2,                               DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,          DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,
+      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_1,    XXXXXXX,          DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
-                                     XXXXXXX, XXXXXXX, XXXXXXX,                   DEAD,    DEAD,    DEAD
+                                     KC_SPC,  XXXXXXX, XXXXXXX,                   DEAD,    DEAD,    DEAD
   //                               └────────┴────────┴────────┘                 └────────┴────────┴────────┘
   ), [_ANKI1] = LAYOUT(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
-      XXXXXXX, XXXXXXX, XXXXXXX, _______, L_A3,    XXXXXXX,                            DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,
+      XXXXXXX, KC_UP,   XXXXXXX, _______, L_A3,    XXXXXXX,                            DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                            DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,
+      KC_LEFT, KC_DOWN, KC_RGHT, XXXXXXX, XXXXXXX, XXXXXXX,                            DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
       XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                            DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
@@ -218,9 +238,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //                               └────────┴────────┴────────┘                 └────────┴────────┴────────┘
   ), [_ANKI2] = LAYOUT(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
-      XXXXXXX, XXXXXXX, XXXXXXX, L_A3,    _______, XXXXXXX,                            DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,
+      XXXXXXX, KC_UP,   XXXXXXX, L_A3,    _______, XXXXXXX,                            DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                            DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,
+      KC_LEFT, KC_DOWN, KC_RGHT, XXXXXXX, XXXXXXX, XXXXXXX,                            DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
       M_GAME,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                            DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
@@ -230,9 +250,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //                               └────────┴────────┴────────┘                 └────────┴────────┴────────┘
   ), [_ANKI3] = LAYOUT(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
-      XXXXXXX, XXXXXXX, XXXXXXX, _______, _______, XXXXXXX,                            DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,
+      XXXXXXX, KC_UP,   XXXXXXX, _______, _______, XXXXXXX,                            DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                            DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,
+      KC_LEFT, KC_DOWN, KC_RGHT, XXXXXXX, XXXXXXX, XXXXXXX,                            DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
       XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                            DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
@@ -245,21 +265,21 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_GAME] = LAYOUT(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
-      XXXXXXX, XXXXXXX, XXXXXXX, L_G1,    L_G2,    XXXXXXX,                            DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,
+      XXXXXXX, KC_UP,   XXXXXXX, L_G1,    L_G2,    KC_ESC,                             DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                            DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,
+      KC_LEFT, KC_DOWN, KC_RGHT, XXXXXXX, XXXXXXX, KC_K,                               DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                            DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,
+      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, DEMODSH, KC_P,                               DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,          DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,
+      XXXXXXX, XXXXXXX, KC_F12,  XXXXXXX, XXXXXXX, KC_O,    XXXXXXX,          DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
-                                     XXXXXXX, XXXXXXX, XXXXXXX,                   DEAD,    DEAD,    DEAD
+                                     KC_N,    KC_M,    KC_ENT,                    DEAD,    DEAD,    DEAD
   //                               └────────┴────────┴────────┘                 └────────┴────────┴────────┘
   ), [_GAME1] = LAYOUT(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
-      XXXXXXX, XXXXXXX, XXXXXXX, _______, L_G3,    XXXXXXX,                            DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,
+      XXXXXXX, KC_UP,   XXXXXXX, _______, L_G3,    XXXXXXX,                            DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                            DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,
+      KC_LEFT, KC_DOWN, KC_RGHT, XXXXXXX, XXXXXXX, XXXXXXX,                            DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
       XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                            DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
@@ -269,9 +289,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //                               └────────┴────────┴────────┘                 └────────┴────────┴────────┘
   ), [_GAME2] = LAYOUT(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
-      XXXXXXX, XXXXXXX, XXXXXXX, L_G3,    _______, XXXXXXX,                            DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,
+      XXXXXXX, KC_UP,   XXXXXXX, L_G3,    _______, XXXXXXX,                            DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                            DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,
+      KC_LEFT, KC_DOWN, KC_RGHT, XXXXXXX, XXXXXXX, XXXXXXX,                            DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
       M_MACRO, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                            DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
@@ -281,9 +301,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //                               └────────┴────────┴────────┘                 └────────┴────────┴────────┘
   ), [_GAME3] = LAYOUT( // ANKI
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
-      XXXXXXX, XXXXXXX, XXXXXXX, _______, _______, XXXXXXX,                            DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,
+      XXXXXXX, KC_UP,   XXXXXXX, _______, _______, XXXXXXX,                            DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                            DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,
+      KC_LEFT, KC_DOWN, KC_RGHT, XXXXXXX, XXXXXXX, XXXXXXX,                            DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
       XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                            DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
@@ -312,12 +332,6 @@ void keyboard_post_init_user(void) {
     default_layer_set(_MACRO);
     layer_state_set(_MACRO);
     debug_enable = true;
-}
-
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    dprintf("KL: kc: 0x%04X, col: %u, row: %u, pressed: %b, time: %u, interrupt: %b, count: %u\n", keycode, record->event.key.col, record->event.key.row, record->event.pressed, record->event.time, record->tap.interrupted, record->tap.count);
-    dprintf("Default: %X  Current: %X  Highest: %X\n\n", default_layer_state, layer_state, get_highest_layer(layer_state));
-	return true;
 }
 
 /*
