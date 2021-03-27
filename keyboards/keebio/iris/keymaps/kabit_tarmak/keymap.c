@@ -76,6 +76,22 @@ enum layer_names {   //              |      |||| |||| |||/         |
     _MOD2,       //            : 0x040 = 0b 0000 0100 0000    ---> 6
     _MOD3        //            : 0x080 = 0b 0000 1000 0000    ---> 7
 };
+layer_state_t current_layer = _TM1;
+// Layer Masks
+#define X_LOWER 0x1F
+#define X_UPPER 0xE0
+#define X_TM1 1 << _TM1
+#define X_TM2 1 << _TM2
+#define X_TM3 1 << _TM3
+#define X_TM4 1 << _TM4
+#define X_CMK 1 << _COLEMAK
+#define X_M1  1 << _MOD1
+#define X_M2  1 << _MOD2
+#define X_M3  1 << _MOD3
+
+#define L_M1    TT(_MOD1)
+#define L_M2    TT(_MOD2)
+#define L_M3    TT(_MOD3)
 
 #define DEAD    KC_NO
 
@@ -91,7 +107,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
       KC_LCTL, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_MUTE,          DEAD,    KC_K,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_BSLS,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
-                                     L_E2,    KC_LSFT, KC_ENT,                    KC_SPC,  KC_LGUI, L_E1
+                                     L_M2,    KC_LSFT, KC_ENT,                    KC_SPC,  KC_LGUI, L_M1
   //                               └────────┴────────┴────────┘                 └────────┴────────┴────────┘
   ), [_TM2] = LAYOUT(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
@@ -103,7 +119,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
       KC_LCTL, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_MUTE,          DEAD,    KC_K,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_BSLS,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
-                                     L_E2,    KC_LSFT, KC_ENT,                    KC_SPC,  KC_LGUI, L_E1
+                                     L_M2,    KC_LSFT, KC_ENT,                    KC_SPC,  KC_LGUI, L_M1
   //                               └────────┴────────┴────────┘                 └────────┴────────┴────────┘
   ), [_TM3] = LAYOUT(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
@@ -115,7 +131,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
       KC_LCTL, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_MUTE,          DEAD,    KC_K,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_BSLS,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
-                                     L_E2,    KC_LSFT, KC_ENT,                    KC_SPC,  KC_LGUI, L_E1
+                                     L_M2,    KC_LSFT, KC_ENT,                    KC_SPC,  KC_LGUI, L_M1
   //                               └────────┴────────┴────────┘                 └────────┴────────┴────────┘
   ), [_TM4] = LAYOUT(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
@@ -127,7 +143,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
       KC_LCTL, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_MUTE,          DEAD,    KC_K,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_BSLS,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
-                                     L_E2,    KC_LSFT, KC_ENT,                    KC_SPC,  KC_LGUI, L_E1
+                                     L_M2,    KC_LSFT, KC_ENT,                    KC_SPC,  KC_LGUI, L_M1
   //                               └────────┴────────┴────────┘                 └────────┴────────┴────────┘
   ),
   [_COLEMAK] = LAYOUT(
@@ -140,7 +156,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
       KC_LCTL, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_MUTE,          DEAD,    KC_K,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_BSLS,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
-                                     L_E2,    KC_LSFT, KC_ENT,                    KC_SPC,  KC_LGUI, L_E1
+                                     L_M2,    KC_LSFT, KC_ENT,                    KC_SPC,  KC_LGUI, L_M1
   //                               └────────┴────────┴────────┘                 └────────┴────────┴────────┘
   ), [_MOD1] = LAYOUT(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
@@ -152,7 +168,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
       KC_RCTL, XXXXXXX, KC_COLN, KC_DQUO, KC_UNDS, KC_LCBR, KC_F13,           DEAD,    KC_RCBR, KC_MINS, KC_QUOT, KC_QUES, XXXXXXX, XXXXXXX,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
-                                     L_P3,    _______, _______,                   _______, _______, _______
+                                     L_M3,    _______, _______,                   _______, _______, _______
   //                               └────────┴────────┴────────┘                 └────────┴────────┴────────┘
   ), [_MOD2] = LAYOUT(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
@@ -164,7 +180,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
       M_GER,   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______,          DEAD,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
-                                     _______, _______, _______,                   _______, _______, L_P3
+                                     _______, _______, _______,                   _______, _______, L_M3
   //                               └────────┴────────┴────────┘                 └────────┴────────┴────────┘
   ), [_MOD3] = LAYOUT(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
@@ -182,26 +198,22 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 
 void lights_on(layer_state_t state) {
-    // This is all probably easier with a bunch of bit masks, but heck
-    rgblight_set_layer_state(0, layer_state_cmp(state, _ENG) || !(layer_state_cmp(state, _PROG) || layer_state_cmp(state, _GER)));
-    rgblight_set_layer_state(1, layer_state_cmp(state, _PROG));
-    rgblight_set_layer_state(2, layer_state_cmp(state, _GER));
-
-    rgblight_set_layer_state(3, layer_state_cmp(state, _ENG1) || layer_state_cmp(state, _PROG1) || layer_state_cmp(state, _GER1) ||
-        layer_state_cmp(state, _ENG3) || layer_state_cmp(state, _PROG3) || layer_state_cmp(state, _GER3));
-    rgblight_set_layer_state(4, layer_state_cmp(state, _ENG2) || layer_state_cmp(state, _PROG2) || layer_state_cmp(state, _GER2) ||
-        layer_state_cmp(state, _ENG3) || layer_state_cmp(state, _PROG3) || layer_state_cmp(state, _GER3));
+    // Loop through main layers to set color
+    for (int layer=_TM1; layer <= _COLEMAK; layer++) {
+        rgblight_set_layer_state(layer, layer_state_cmp(state, 1 << layer);
+    }
 }
 
 void keyboard_post_init_user(void) {
     // Enable the LED layers
     rgblight_layers = backlight_layers;
-    default_layer_set(_ENG);
-    layer_state_set(_ENG);
-    debug_enable = true;
+    default_layer_set(_TM1);
+    //layer_state_set(_TM1);
+    debug_enable = false;
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+/*
     switch (keycode) {
         case MAC_UM:
 	    if (record->event.pressed) {
@@ -211,6 +223,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     }
     dprintf("KL: kc: 0x%04X, col: %u, row: %u, pressed: %b, time: %u, interrupt: %b, count: %u\n", keycode, record->event.key.col, record->event.key.row, record->event.pressed, record->event.time, record->tap.interrupted, record->tap.count);
     dprintf("Default: %X  Current: %X  Highest: %X\n\n", default_layer_state, layer_state, get_highest_layer(layer_state));
+    */
 	return true;
 }
 
@@ -222,22 +235,10 @@ layer_state_t default_layer_state_set_user(layer_state_t state) {
 }*/
 
 layer_state_t layer_state_set_user(layer_state_t state) {
-    // Any time we have a layer state transition, ensure all layers are within the current base layer set. Turn off all layers that are not
     // group_mask must have one bit per number of layers per group
-    layer_state_t group_mask = 0xF;
-
-    // need to create a bitwise & mask for all allowed layers
-    layer_state_t def_layer = default_layer_state;
-    layer_state_t shift = 0;
-    // Count how far over the default layer is
-    while (def_layer > 0) {
-        def_layer = def_layer >> 1;
-	shift = shift + 1;
-    }
-    // Shift the group mask the same distance
-    layer_state_t mask = group_mask << (shift - 1);
-    // Apply the bitmask. This cleans out layers left "on" after the TT(2+base) resets
-    layer_state_t state_mask = state & mask;
+    layer_state_t current_mask = 1 << current_layer;
+    layer_state_t group_mask = X_UPPER | current_mask;
+    layer_state_t state_mask = state & group_mask;
 
     // If artifacts are left over the applied mask and state will be different. So clear the bad ones out
     // there is a built in for this (layer_and(mask)) but since we're in layer_state_set_user() we have to
@@ -260,52 +261,35 @@ void encoder_update_user(uint8_t index, bool clockwise) {
     }
     kabit_layer = get_highest_layer(kabit_layer);
 
-    bool change = false;
-    layer_state_t change_to;
-    switch (kabit_layer) {
-        case _ENG:
-	case _PROG:
-	case _GER:
+    if (kabit_layer & X_UPPER) == 0 {
 	    if (clockwise) {
 	        tap_code(KC_VOLU);
 	    } else {
 	        tap_code(KC_VOLD);
 	    }
-	    break;
-	case _ENG1:
-	case _PROG1:
-	case _GER1:
+    } else if (kabit_layer & (1 << _MOD1) > 0) {
 	    if (clockwise) {
             tap_code(KC_PGDN);
 	    } else {
             tap_code(KC_PGUP);
 	    }
-	    break;
-	case _ENG2:
-	    change = true;
-	    if (clockwise) {
-            change_to = X_PROG;
-	    } else {
-            change_to = X_GER;
-	    }
-	    break;
-	case _PROG2:
-	    change = true;
-	    if (clockwise) {
-            change_to = X_GER;
-	    } else {
-            change_to = X_ENG;
-	    }
-	    break;
-	case _GER2:
-	    change = true;
-	    if (clockwise) {
-            change_to = X_ENG;
-	    } else {
-            change_to = X_PROG;
-	    }
-	    break;
+    } else if (kabit_layer & (1 << _MOD2) > 0) {
+        // Switch layers
+        change = true;
+        if (clockwise) {
+            current_layer++;
+            if (current_layer > _COLEMAK) {
+                current_layer = _TM1;
+            }
+        } else {
+            current_layer--;
+            if (current_layer < _TM1) {
+                current_layer = _COLEMAK;
+            }
+        }
     }
+    layer_state_t change_to = 1 << current_layer;
+
     if (change) {
         default_layer_set(change_to);
         layer_state_set(change_to);
