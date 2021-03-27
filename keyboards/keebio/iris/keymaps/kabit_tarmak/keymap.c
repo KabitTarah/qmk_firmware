@@ -37,19 +37,19 @@ const rgblight_segment_t PROGMEM layer_tm1_hsv[] = RGBLIGHT_LAYER_SEGMENTS(
 );
 
 const rgblight_segment_t PROGMEM layer_tm2_hsv[] = RGBLIGHT_LAYER_SEGMENTS(
-    {0, 12 HSV_ORANGE}
+    {0, 12, HSV_ORANGE}
 );
 
 const rgblight_segment_t PROGMEM layer_tm3_hsv[] = RGBLIGHT_LAYER_SEGMENTS(
-    {0, 12 HSV_GREEN}
+    {0, 12, HSV_GREEN}
 );
 
 const rgblight_segment_t PROGMEM layer_tm4_hsv[] = RGBLIGHT_LAYER_SEGMENTS(
-    {0, 12 HSV_BLUE}
+    {0, 12, HSV_BLUE}
 );
 
 const rgblight_segment_t PROGMEM layer_colemak_hsv[] = RGBLIGHT_LAYER_SEGMENTS(
-    {0, 12 HSV_MAGENTA}
+    {0, 12, HSV_MAGENTA}
 );
 
 const rgblight_segment_t* const PROGMEM backlight_layers[] = RGBLIGHT_LAYERS_LIST(
@@ -76,7 +76,7 @@ enum layer_names {   //              |      |||| |||| |||/         |
     _MOD2,       //            : 0x040 = 0b 0000 0100 0000    ---> 6
     _MOD3        //            : 0x080 = 0b 0000 1000 0000    ---> 7
 };
-layer_state_t current_layer = _TM1;
+int current_layer = _TM1;
 // Layer Masks
 #define X_LOWER 0x1F
 #define X_UPPER 0xE0
@@ -176,9 +176,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
       KC_TAB,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                            XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-      M_ENG,   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                            XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                            XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-      M_GER,   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______,          DEAD,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______,          DEAD,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
                                      _______, _______, _______,                   _______, _______, L_M3
   //                               └────────┴────────┴────────┘                 └────────┴────────┴────────┘
@@ -200,7 +200,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 void lights_on(layer_state_t state) {
     // Loop through main layers to set color
     for (int layer=_TM1; layer <= _COLEMAK; layer++) {
-        rgblight_set_layer_state(layer, layer_state_cmp(state, 1 << layer);
+        rgblight_set_layer_state(layer, layer_state_cmp(state, 1 << layer));
     }
 }
 
@@ -260,20 +260,21 @@ void encoder_update_user(uint8_t index, bool clockwise) {
         kabit_layer = default_layer_state;
     }
     kabit_layer = get_highest_layer(kabit_layer);
+    bool change = false;
 
-    if (kabit_layer & X_UPPER) == 0 {
+    if ((kabit_layer & X_UPPER) == 0) {
 	    if (clockwise) {
 	        tap_code(KC_VOLU);
 	    } else {
 	        tap_code(KC_VOLD);
 	    }
-    } else if (kabit_layer & (1 << _MOD1) > 0) {
+    } else if ((kabit_layer & (1 << _MOD1)) > 0) {
 	    if (clockwise) {
             tap_code(KC_PGDN);
 	    } else {
             tap_code(KC_PGUP);
 	    }
-    } else if (kabit_layer & (1 << _MOD2) > 0) {
+    } else if ((kabit_layer & (1 << _MOD2)) > 0) {
         // Switch layers
         change = true;
         if (clockwise) {
