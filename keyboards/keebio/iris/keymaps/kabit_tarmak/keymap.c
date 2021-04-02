@@ -25,7 +25,8 @@
 #include "print.h"
 
 enum custom_keycodes {
-    MAC_UM = SAFE_RANGE
+    MAC_UM = SAFE_RANGE,
+    VIM_WR,
 };
 
 // RGB Underglow
@@ -196,11 +197,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
       KC_ESC,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                               KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_BSPC,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-      KC_TAB,  XXXXXXX, XXXXXXX, XXXXXXX, KC_GRV,  KC_LBRC,                            KC_RBRC, KC_DLR,  KC_PERC, XXXXXXX, XXXXXXX, XXXXXXX,
+      KC_TAB,  XXXXXXX, KC_COLN, XXXXXXX, KC_GRV,  KC_LBRC,                            KC_RBRC, KC_DLR,  KC_PERC, XXXXXXX, XXXXXXX, XXXXXXX,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
       KC_RALT, KC_AMPR, KC_PIPE, KC_CIRC, KC_EXLM, KC_LPRN,                            KC_RPRN, KC_EQL,  KC_LT,   KC_GT, XXXXXXX, XXXXXXX,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-      KC_RCTL, XXXXXXX, KC_COLN, KC_DQUO, KC_UNDS, KC_LCBR, KC_F13,           DEAD,    KC_RCBR, KC_MINS, KC_QUOT, KC_QUES, XXXXXXX, XXXXXXX,
+      KC_RCTL, XXXXXXX, XXXXXXX, KC_DQUO, KC_UNDS, KC_LCBR, KC_F13,           DEAD,    KC_RCBR, KC_MINS, KC_QUOT, KC_QUES, XXXXXXX, XXXXXXX,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
                                      L_M3,    _______, _______,                   _______, _______, _______
   //                               └────────┴────────┴────────┘                 └────────┴────────┴────────┘
@@ -208,7 +209,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
       KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,                              KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-      KC_TAB,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                            XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+      KC_TAB,  XXXXXXX, VIM_WR,  XXXXXXX, XXXXXXX, XXXXXXX,                            XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
       XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                            XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_UP,   XXXXXXX,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
@@ -260,17 +261,22 @@ void keyboard_post_init_user(void) {
     // default_layer_set(X_TM1);
     // layer_state_set(X_TM1);
     lights_on(0);
-    debug_enable = true;
+    debug_enable = false;
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
         case MAC_UM:
-	    if (record->event.pressed) {
-	        SEND_STRING(SS_RALT("u")); // send RALT + U = umlaut on Mac
-	    }
-	    break;
-    }
+            if (record->event.pressed) {
+                SEND_STRING(SS_RALT("u")); // send RALT + U = umlaut on Mac
+            }
+            break;
+        case VIM_WR:
+            if (record->event.pressed) {
+                SEND_STRING(":w"SS_TAP(X_ENT));
+            }
+            break;
+        }
     dprintf("KL: kc: 0x%04X, col: %u, row: %u, pressed: %b, time: %u, interrupt: %b, count: %u\n", keycode, record->event.key.col, record->event.key.row, record->event.pressed, record->event.time, record->tap.interrupted, record->tap.count);
     dprintf("    Default: %u\n", get_highest_layer(default_layer_state));
     dprintf("    Highest: %u\n", get_highest_layer(layer_state));
@@ -312,9 +318,9 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 void encoder_update_user(uint8_t index, bool clockwise) {
     // Testing shows that layer state returns 0 if only the default is enabled, even if the default layer is not 0
     layer_state_t highest_layer = get_highest_layer(layer_state);
-    layer_state_t default_layer = get_highest_layer(default_layer_state);
+    //layer_state_t default_layer = get_highest_layer(default_layer_state);
     dprintf("Layer State: %X ", layer_state);
-    dprintf("- Default Layer: %u ", default_layer);
+    //dprintf("- Default Layer: %u ", default_layer);
     dprintf("- Highest Layer: %u\n", highest_layer);
     bool change = false;
 

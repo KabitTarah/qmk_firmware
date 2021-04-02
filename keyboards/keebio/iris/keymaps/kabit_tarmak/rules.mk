@@ -1,7 +1,7 @@
 # Memory reduction
 LTO_ENABLE = yes
 MOUSEKEY_ENABLE = no
-CONSOLE_ENABLE = yes
+CONSOLE_ENABLE = no
 
 # Features used
 RGBLIGHT_ENABLE = yes       # Backlighting
