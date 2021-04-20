@@ -14,34 +14,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include QMK_KEYBOARD_H
+#include "virtser.h"
+#include "string.h"
 
-const rgblight_segment_t PROGMEM layer_base_hsv[] = RGBLIGHT_LAYER_SEGMENTS(
-    {0, 12, HSV_RED}
-);
-
-const rgblight_segment_t PROGMEM layer_prog_hsv[] = RGBLIGHT_LAYER_SEGMENTS(
-    {0, 12, HSV_GREEN}
-);
-
-const rgblight_segment_t PROGMEM layer_media_hsv[] = RGBLIGHT_LAYER_SEGMENTS(
-    {0, 12, HSV_BLUE}
-);
-
-const rgblight_segment_t PROGMEM layer_dmod_hsv[] = RGBLIGHT_LAYER_SEGMENTS(
-    {0, 1, HSV_CYAN}
-);
-
-const rgblight_segment_t PROGMEM layer_smod_hsv[] = RGBLIGHT_LAYER_SEGMENTS(
-    {1, 1, HSV_CYAN}
-);
-
-const rgblight_segment_t* const PROGMEM backlight_layers[] = RGBLIGHT_LAYERS_LIST(
-    layer_base_hsv,
-    layer_prog_hsv,
-    layer_media_hsv,
-    layer_dmod_hsv,
-    layer_smod_hsv
-);
+char str1[31];
+char str2[31];
+char str3[31];
+char str4[31];
+char str5[31];
+char str6[31];
 
 enum encoder_names {
   _LEFT,
@@ -118,9 +99,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         | Left              | Down                      | Right              |
      */
     [_PROG] = LAYOUT(
-        RESET  , BL_STEP, KC_STOP,
-        _______, KC_HOME, RGB_MOD,
-        KC_MPRV, KC_END , KC_MNXT
+        MOD_D  , RET_B  , MOD_S  ,
+        KT_HOME, KT_UP  , KT_END ,
+        KT_LEFT, KT_DOWN, KT_RGHT
     ),
     /*
         |                   | Knob 1: Change base layer |                    |
@@ -129,20 +110,46 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         | Left              | Down                      | Right              |
      */
     [_MEDIA] = LAYOUT(
-        RESET  , BL_STEP, KC_STOP,
-        _______, KC_HOME, RGB_MOD,
-        KC_MPRV, KC_END , KC_MNXT
+        MOD_D  , RET_B  , MOD_S  ,
+        KT_HOME, KT_UP  , KT_END ,
+        KT_LEFT, KT_DOWN, KT_RGHT
     ),
 };
 
-void lights_on() {
-    // Loop through main layers to set color
-    for (layer_state_t my_layer=_BASE; my_layer <= _max_layer; my_layer++) {
-        rgblight_set_layer_state(my_layer, _layer == my_layer);
+void rgb_matrix_indicators_kb(void) {
+    switch (_layer) {
+        case _BASE:
+            rgb_matrix_set_color_all(RGB_RED);
+            if (dmod) {
+                rgb_matrix_set_color(9, RGB_BLUE);
+            }
+            if (smod) {
+                rgb_matrix_set_color(10, RGB_BLUE);
+            }
+            break;
+        case _PROG:
+            rgb_matrix_set_color_all(RGB_GREEN);
+            if (dmod) {
+                rgb_matrix_set_color(9, RGB_PURPLE);
+            }
+            if (smod) {
+                rgb_matrix_set_color(10, RGB_PURPLE);
+            }
+            break;
+        case _MEDIA:
+            rgb_matrix_set_color_all(RGB_BLUE);
+            if (dmod) {
+                rgb_matrix_set_color(9, RGB_RED);
+            }
+            if (smod) {
+                rgb_matrix_set_color(10, RGB_RED);
+            }
+            break;
     }
+}
 
-    rgb_set_layer_state(_max_layer+1, dmod);
-    rgb_set_layer_state(_max_layer+2, smod);
+void keyboard_post_init_user(void) {
+    debug_enable = true;
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
@@ -153,7 +160,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             } else {
                 dmod = false;
             }
-            lights_on();
             break;
         case MOD_S:
             if (record->event.pressed) {
@@ -161,38 +167,40 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             } else {
                 smod = false;
             }
-            lights_on();
             break;
         case RET_B:
             if (record->event.pressed) {
                 if (smod && dmod) {
                     reset_keyboard();
-                } elif (smod) {
+                } else if (smod) {
                     tap_code(KC_MUTE);
-                } elif (dmod) {
+                } else if (dmod) {
                     tap_code(KC_MPLY);
                 } else {
                     // Return to base layer
                     default_layer_set(X_BASE);
                     layer_state_set(X_BASE);
-                    lights_on();
                 }
             }
         break;
     }
+    dprintf("KL: kc: 0x%04X, col: %u, row: %u, pressed: %b, time: %u, interrupt: %b, count: %u\n", keycode, record->event.key.col, record->event.key.row, record->event.pressed, record->event.time, record->tap.interrupted, record->tap.count);
+    dprintf("    Default: %u\n", get_highest_layer(default_layer_state));
+    dprintf("    Highest: %u\n", get_highest_layer(layer_state));
+    dprintf("    Layer Index: %u\n\n", _layer);
+    dprintf("          D Mod: %u   S Mod: %u\n\n", dmod, smod);
+    dprintf("\n\n");
     return true;
 };
 
 void encoder_update_user(uint8_t index, bool clockwise) {
-    layer_state_t highest_layer = get_highest_layer(layer_state);
-
     if (dmod) {
         if (clockwise) {
             tap_code(KC_PGDN);
         } else {
             tap_code(KC_PGUP);
         }
-    } elif (smod) {
+    } else if (smod) {
         if (clockwise) {
             tap_code(KC_DOWN);
         } else {
@@ -214,6 +222,55 @@ void encoder_update_user(uint8_t index, bool clockwise) {
         layer_state_t change_to = (1 << _layer);
         default_layer_set(change_to);
         layer_state_set(change_to);
-        lights_on();
+    }
+}
+
+int strings = 0;
+uint8_t start = 0; // 0=waiting for TLV, 1=read type, 2=read length
+uint8_t type = 0xff;
+uint8_t length;
+uint8_t value[31]; // max string len 30 + null terminator
+uint8_t clen;      // current length in bytes
+void virtser_recv(uint8_t byte_in) {
+    switch (start) {
+        case 0:
+            type = byte_in;
+            start = 1;
+            break;
+        case 1:
+            length = byte_in;
+            start = 2;
+            break;
+        case 2:
+            value[clen] = byte_in;
+            clen++;
+            break;
+    }
+
+    if (clen == length) {
+        switch (type) {
+            case 0x1:       // save string #1
+                strcpy((char *)value, str1);
+                break;
+            case 0x2:       // save string #2
+                strcpy((char *)value, str2);
+                break;
+            case 0x3:       // save string #2
+                strcpy((char *)value, str3);
+                break;
+            case 0x4:       // save string #2
+                strcpy((char *)value, str4);
+                break;
+            case 0x5:       // save string #2
+                strcpy((char *)value, str5);
+                break;
+            case 0x6:       // save string #2
+                strcpy((char *)value, str6);
+                break;
+        }
+
+        clen = 0;
+        start = 0;
+        type = 0xff;
     }
 }
