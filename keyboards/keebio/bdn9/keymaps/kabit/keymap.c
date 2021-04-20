@@ -15,6 +15,34 @@
  */
 #include QMK_KEYBOARD_H
 
+const rgblight_segment_t PROGMEM layer_base_hsv[] = RGBLIGHT_LAYER_SEGMENTS(
+    {0, 12, HSV_RED}
+);
+
+const rgblight_segment_t PROGMEM layer_prog_hsv[] = RGBLIGHT_LAYER_SEGMENTS(
+    {0, 12, HSV_GREEN}
+);
+
+const rgblight_segment_t PROGMEM layer_media_hsv[] = RGBLIGHT_LAYER_SEGMENTS(
+    {0, 12, HSV_BLUE}
+);
+
+const rgblight_segment_t PROGMEM layer_dmod_hsv[] = RGBLIGHT_LAYER_SEGMENTS(
+    {0, 1, HSV_CYAN}
+);
+
+const rgblight_segment_t PROGMEM layer_smod_hsv[] = RGBLIGHT_LAYER_SEGMENTS(
+    {1, 1, HSV_CYAN}
+);
+
+const rgblight_segment_t* const PROGMEM backlight_layers[] = RGBLIGHT_LAYERS_LIST(
+    layer_base_hsv,
+    layer_prog_hsv,
+    layer_media_hsv,
+    layer_dmod_hsv,
+    layer_smod_hsv
+);
+
 enum encoder_names {
   _LEFT,
   _RIGHT,
@@ -85,7 +113,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
     /*
         |                   | Knob 1: Change base layer |                    |
-        | Dom Modifier      | Press: Return to Base     | [Sub Modifier]     |
+        | Dom Modifier      | Press: Return to Base     | Sub Modifier       |
         | Home              | Up                        | End                |
         | Left              | Down                      | Right              |
      */
@@ -96,7 +124,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
     /*
         |                   | Knob 1: Change base layer |                    |
-        | Dom Modifier      | Press: Return to Base     | [Sub Modifier]     |
+        | Dom Modifier      | Press: Return to Base     | Sub Modifier       |
         | Home              | Up                        | End                |
         | Left              | Down                      | Right              |
      */
@@ -107,6 +135,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 };
 
+void lights_on() {
+    // Loop through main layers to set color
+    for (layer_state_t my_layer=_BASE; my_layer <= _max_layer; my_layer++) {
+        rgblight_set_layer_state(my_layer, _layer == my_layer);
+    }
+
+    rgb_set_layer_state(_max_layer+1, dmod);
+    rgb_set_layer_state(_max_layer+2, smod);
+}
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
         case MOD_D:
@@ -115,6 +153,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             } else {
                 dmod = false;
             }
+            lights_on();
             break;
         case MOD_S:
             if (record->event.pressed) {
@@ -122,17 +161,21 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             } else {
                 smod = false;
             }
+            lights_on();
             break;
         case RET_B:
             if (record->event.pressed) {
-                if (smod) {
+                if (smod && dmod) {
                     reset_keyboard();
-                } elif (dmod) {
+                } elif (smod) {
                     tap_code(KC_MUTE);
+                } elif (dmod) {
+                    tap_code(KC_MPLY);
                 } else {
                     // Return to base layer
                     default_layer_set(X_BASE);
                     layer_state_set(X_BASE);
+                    lights_on();
                 }
             }
         break;
@@ -141,11 +184,36 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 };
 
 void encoder_update_user(uint8_t index, bool clockwise) {
-    if (index == _MIDDLE) {
+    layer_state_t highest_layer = get_highest_layer(layer_state);
+
+    if (dmod) {
+        if (clockwise) {
+            tap_code(KC_PGDN);
+        } else {
+            tap_code(KC_PGUP);
+        }
+    } elif (smod) {
         if (clockwise) {
             tap_code(KC_DOWN);
         } else {
             tap_code(KC_UP);
         }
+    } else {
+        if (clockwise) {
+            _layer++;
+            if (_layer > _max_layer) {
+                _layer = _BASE;
+            }
+        } else {
+            if (_layer == _BASE) {
+                _layer = _max_layer;
+            } else {
+                _layer--;
+            }
+        }
+        layer_state_t change_to = (1 << _layer);
+        default_layer_set(change_to);
+        layer_state_set(change_to);
+        lights_on();
     }
 }
