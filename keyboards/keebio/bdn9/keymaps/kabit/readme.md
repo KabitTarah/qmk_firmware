@@ -18,6 +18,8 @@ This is a 3x3 macropad with one encoder in the following configuration:
 +-----+-----+-----+
 ```
 
+![image of BDN9](https://lh3.googleusercontent.com/pw/ACtC-3cseFZhtNSv-s9F5wGiZVoOI_AtmlO4BKqLsdDNJj-TDFfFlyFTbAhCvG8V5aRzYT0e_tTxdcZX9mcWubh4-9zGMWerEi9VILLd291Kp64yAwGth186Ot4sBmlSaTWLsHRxEGkenyVSEwDDsfEFqp1mrA=w1164-h1550-no?authuser=0)
+
 ### Encoder
 The base encoder function changes layers:
 
