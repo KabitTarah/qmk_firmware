@@ -128,21 +128,21 @@ The board will receive the string test1234 and put it into string register 1. Ch
 |         |         |         |
 |         |         |         |
 +---------+---------+---------+
-|         |         |         |
-|         |         |         |
-|         |         |Max      |
-|         |         |Fold     |
-|         |         |         |
-|         |         |         |
-|         |         |         |
+|         |  Line   |         |
+|         | Comment |         |
+|         |         |Un-      |
+|Prev     |Next     |Fold     |
+|         |         |All      |
+|         |  Block  |         |
+|         | Comment |         |
 +---------+---------+---------+
+| Side Opn|         |   Fold  |
+|   Def   |         |    3    |
+|Peek     |         |Fold Fold|
+|Def      |Term     | 2    All|
 |         |         |         |
-|         |         |         |
-|         |         |Min      |
-|         |Term     |Fold     |
-|         |         |         |
-|         |         |         |
-|         | Problems|         |
+|  Go To  |         |   Fold  |
+|   Def   | Problems|    1    |
 +---------+---------+---------+
 ```
 
