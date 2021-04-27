@@ -149,4 +149,4 @@ if len(sys.argv) < 3:
     print()
 else:
     # send the string received to the requested register
-    send_str(ser, int(sys.argv[1]), sys.argv[2])
+    send_str(ser, int(sys.argv[1]), ' '.join(sys.argv[2:]))
