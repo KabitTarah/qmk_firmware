@@ -84,6 +84,9 @@ enum custom_keycodes {
     VS_MINI, // Minimize VSCode folding
     VS_MAXI, // Maximize VSCode folding
     VS_PANL, // Panel (Terminal, Problems)
+    VS_PREV, // Prev tab
+    VS_CMT,  // Next tab & Comments
+    VS_DEF,  // Go to definition
     KT_STR1, // Saved String Technology (tm)
     KT_STR2,
     KT_STR3,
@@ -122,8 +125,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      */
     [_PROG] = LAYOUT(
         MOD_D  , RET_B  , MOD_S  ,
-        KT_HOME, KT_UP  , VS_MAXI,
-        KT_LEFT, VS_PANL, VS_MINI
+        VS_PREV, VS_CMT , VS_MAXI,
+        VS_DEF , VS_PANL, VS_MINI
     ),
     /*
         |                   | Knob 1: Change base layer |                    |
@@ -243,14 +246,17 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case VS_MINI:
             if (record->event.pressed) {
                 if (smod && dmod) {
-                    return true;   // placeholder
-                } else if (smod) {
-                    return true;
-                } else if (dmod) {
-                    return true;
-                } else {
                     // Minimize All Folds
                     SEND_STRING(SS_LGUI("k0"));
+                } else if (smod) {
+                    // Minimise Fold 1
+                    SEND_STRING(SS_LGUI("k1"));
+                } else if (dmod) {
+                    // Minimise Fold 3
+                    SEND_STRING(SS_LGUI("k3"));
+                } else {
+                    // Minimise Fold 2
+                    SEND_STRING(SS_LGUI("k2"));
                 }
             }
             break;
@@ -280,6 +286,52 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 } else {
                     // VSCode TERMINAL
                     SEND_STRING(SS_LGUI(SS_TAP(X_F12)));
+                }
+            }
+            break;
+        case VS_DEF:
+            if (record->event.pressed) {
+                if (smod && dmod) {
+                    return true;   // placeholder
+                } else if (smod) {
+                    // VSCode Go to Definition
+                    SEND_STRING(SS_TAP(X_F12));
+                } else if (dmod) {
+                    // VSCode Open Definition to side
+                    SEND_STRING(SS_LGUI("k"SS_TAP(X_F12)));
+                } else {
+                    // VSCode Peek Definition
+                    SEND_STRING(SS_LALT(SS_TAP(X_F12)));
+                }
+            }
+            break;
+        case VS_PREV:
+            if (record->event.pressed) {
+                if (smod && dmod) {
+                    return true;   // placeholder
+                } else if (smod) {
+                    return true;   // placeholder
+                } else if (dmod) {
+                    return true;   // placeholder
+                } else {
+                    // VSCode Prev Tab
+                    SEND_STRING(SS_LGUI("k"SS_TAP(X_LEFT)));
+                }
+            }
+            break;
+        case VS_CMT:
+            if (record->event.pressed) {
+                if (smod && dmod) {
+                    return true;   // placeholder
+                } else if (smod) {
+                    // VSCode Block Comment
+                    SEND_STRING(SS_LALT("A"));
+                } else if (dmod) {
+                    // VSCode Line Comment
+                    SEND_STRING(SS_LGUI("/"));
+                } else {
+                    // VSCode Next Tab
+                    SEND_STRING(SS_LGUI("k"SS_TAP(X_RGHT)));
                 }
             }
             break;
