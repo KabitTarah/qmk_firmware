@@ -41,7 +41,8 @@ enum unicode_keys {
 };
 
 enum custom_keycodes {
-    MAC_UM = SAFE_RANGE
+    MAC_UM = SAFE_RANGE,
+    VIM_WR,
 };
 
 
@@ -128,10 +129,10 @@ const rgblight_segment_t* const PROGMEM backlight_layers[] = RGBLIGHT_LAYERS_LIS
     layer_2_hsv
 );
 
-//                                           _ L_G3
-//                                          / _ L_G2
-//                                          |/ _ L_G1
-//                                          ||/ _ M_GER
+//                                           _ L_KYR3
+//                                          / _ L_KYR2
+//                                          |/ _ L_KYR1
+//                                          ||/ _ M_KYRIA
 //                                          |||/
 //                                          ||||  _ L_P3
 //                                          |||| / _ L_P2
@@ -151,18 +152,43 @@ enum layer_names {   //              |      |||| |||| |||/         |
     _PROG1,      //        L_P1: 0x020 = 0b 0000 0010 0000    ---> 5
     _PROG2,      //        L_P2: 0x040 = 0b 0000 0100 0000    ---> 6
     _PROG3,      //        L_P3: 0x080 = 0b 0000 1000 0000    ---> 7
-    _GER,        //  M_GER BASE: 0x100 = 0b 0001 0000 0000    ---> 8
-    _GER1,       //        L_G1: 0x200 = 0b 0010 0000 0000    ---> 9
-    _GER2,       //        L_G2: 0x400 = 0b 0100 0000 0000    ---> 10
-    _GER3        //        L_G3: 0x800 = 0b 1000 0000 0000    ---> 11
+    _KYRIA,      //M_KYRIA BASE: 0x100 = 0b 0001 0000 0000    ---> 8
+    _KYR_UP,     //      L_KYR1: 0x200 = 0b 0010 0000 0000    ---> 9
+    _KYR_LEFT,   //      L_KYR2: 0x400 = 0b 0100 0000 0000    ---> 10
+    _KYR_RGHT,   //      L_KYR3: 0x800 = 0b 1000 0000 0000    ---> 11
+    _KYR_DOWN,   //     L_KYR4: 0x1000 = 0b 1000 0000 0000    ---> 12
 };
 
 // Base Layer Masks
 #define X_ENG	1 << _ENG
 #define X_PROG	1 << _PROG
-#define X_GER	1 << _GER
+#define X_KYRIA	1 << _KYRIA
 
 #define DEAD    KC_NO
+#define KT_SPC  MT(MOD_LGUI, KC_SPC)
+#define KT_N    MT(MOD_LGUI, KC_N)
+#define KT_A    MT(MOD_LCTL, KC_A)
+#define KT_R    MT(MOD_LALT, KC_R)
+#define KT_S    MT(MOD_LSFT, KC_S)
+#define KT_T    MT(MOD_LGUI, KC_T)
+//#define KT_D    MT(MOD_LGUI, KC_D)
+//#define KT_H    MT(MOD_LGUI, KC_H)
+#define KT_N    MT(MOD_LGUI, KC_N)
+#define KT_E    MT(MOD_LSFT, KC_E)
+#define KT_I    MT(MOD_LALT, KC_I)
+#define KT_O    MT(MOD_LCTL, KC_O)
+#define KE_V    LT(_ENG1, KC_V)
+#define KE_B    LT(_ENG2, KC_B)
+#define KE_K    LT(_ENG2, KC_K)
+#define KE_M    LT(_ENG1, KC_M)
+#define KP_V    LT(_PROG1, KC_V)
+#define KP_B    LT(_PROG2, KC_B)
+#define KP_K    LT(_PROG2, KC_K)
+#define KP_M    LT(_PROG1, KC_M)
+#define KK_V    LT(_KYR_UP, KC_V)
+#define KK_B    LT(_KYR_LEFT, KC_B)
+#define KK_K    LT(_KYR_LEFT, KC_K)
+#define KK_M    LT(_KYR_UP, KC_M)
 
 // Layer Key Macros
 #define M_ENG   DF(_ENG)
@@ -177,11 +203,11 @@ enum layer_names {   //              |      |||| |||| |||/         |
 #define L_P2    TT(_PROG2)
 #define L_P3    TT(_PROG3)
 //
-#define M_GER   DF(_GER)
-#define L_G0    TT(_GER)
-#define L_G1    TT(_GER1)
-#define L_G2    TT(_GER2)
-#define L_G3    TT(_GER3)
+#define M_KYRIA   DF(_KYRIA)
+#define L_KYR0    TT(_KYRIA)
+#define L_KYR1    TT(_KYR_UP)
+#define L_KYR2    TT(_KYR_LEFT)
+#define L_KYR3    TT(_KYR_RGHT)
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
@@ -217,7 +243,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
       M_PROG,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                            KC_P1,   KC_P2,   KC_P3,   KC_PAST, XXXXXXX, XXXXXXX,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-      M_GER,   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______,          DEAD,    KC_P0,   KC_PDOT, KC_NLCK, KC_PSLS, XXXXXXX, XXXXXXX,
+      M_KYRIA,   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______,          DEAD,    KC_P0,   KC_PDOT, KC_NLCK, KC_PSLS, XXXXXXX, XXXXXXX,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
                                      _______, _______, _______,                   _______, _______, L_E3
   //                               └────────┴────────┴────────┘                 └────────┴────────┴────────┘
@@ -239,11 +265,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
       KC_ESC,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                               KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_BSPC,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-      KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                               KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    XXXXXXX,
+      KC_TAB,  KC_Q,    KC_W,    KC_F,    KC_P,    KC_G,                               KC_J,    KC_L,    KC_U,    KC_Y,    KC_SCLN, KC_GRV,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-      KC_LALT, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                               KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,
+      KC_LALT, KT_A,    KT_R,    KT_S,    KT_T,    KC_D,                               KC_H,    KT_N,    KT_E,    KT_I,    KT_O,    KC_QUOT,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-      KC_LCTL, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_MUTE,          DEAD,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_BSLS,
+      KC_LCTL, KC_Z,    KC_X,    KC_C,    KP_V,    KP_B,    KC_MUTE,          KC_BSPC, KP_K,    KP_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_BSLS,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
                                      L_P2,    KC_LSFT, KC_ENT,                    KC_SPC,  KC_LGUI, L_P1
   //                               └────────┴────────┴────────┘                 └────────┴────────┴────────┘
@@ -263,11 +289,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
       KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,                              KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-      KC_TAB,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                            XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+      KC_TAB,  XXXXXXX, VIM_WR,  XXXXXXX, XXXXXXX, XXXXXXX,                            KC_7,    KC_8,    KC_9,    XXXXXXX, XXXXXXX, XXXXXXX,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-      M_ENG,   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                            XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                            KC_4,    KC_5,    KC_6,    XXXXXXX, KC_UP,   XXXXXXX,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-      M_GER,   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______,          DEAD,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______,          KC_0,    KC_1,    KC_2,    KC_3,    KC_LEFT, KC_DOWN, KC_RGHT,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
                                      _______, _______, _______,                   _______, _______, L_P3
   //                               └────────┴────────┴────────┘                 └────────┴────────┴────────┘
@@ -286,51 +312,63 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ),
 
 
-  [_GER] = LAYOUT(
+  [_KYRIA] = LAYOUT(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
-      KC_ESC,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                               KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_BSPC,
+      DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,                               DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-      KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                               KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_GRV,
+      KC_TAB,  KC_Q,    KC_W,    KC_F,    KC_P,    KC_G,                               KC_J,    KC_L,    KC_U,    KC_Y,    KC_SCLN, KC_GRV,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-      KC_LALT, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                               KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,
+      KC_LALT, KT_A,    KT_R,    KT_S,    KT_T,    KC_D,                               KC_H,    KT_N,    KT_E,    KT_I,    KT_O,    KC_QUOT,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-      KC_LCTL, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_MUTE,          DEAD,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_BSLS,
+      KC_LCTL, KC_Z,    KC_X,    KC_C,    KK_V,    KK_B,    KC_MUTE,          KC_BSPC, KK_K,    KK_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_BSLS,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
-                                     L_G2,    KC_LSFT, KC_ENT,                    KC_SPC,  KC_LGUI, L_G1
+                                     L_KYR2,  KC_LSFT, KC_ENT,                    KC_SPC,  KC_LGUI, L_KYR1
   //                               └────────┴────────┴────────┘                 └────────┴────────┴────────┘
-  ), [_GER1] = LAYOUT(
+  ), [_KYR_UP] = LAYOUT(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
-      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                            XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, UC_MOD,
+      DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,                               DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
       KC_TAB,  XXXXXXX, XXXXXXX, XU_E,    XXXXXXX, XU_T,                               XU_Y,    XU_U,    XU_I,    XU_O,    XXXXXXX, XXXXXXX,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
       KC_RALT, XU_A,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                            XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-      KC_RCTL, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XU_B,    KC_F13,           DEAD,    XXXXXXX, XXXXXXX, MAC_UM,  XXXXXXX, XXXXXXX, XXXXXXX,
+      KC_RCTL, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XU_B,    KC_F13,           _______, XXXXXXX, XXXXXXX, MAC_UM,  XXXXXXX, XXXXXXX, XXXXXXX,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
-                                     L_G3,    _______, _______,                   _______, _______, _______
+                                     L_KYR3,  _______, _______,                   _______, _______, _______
   //                               └────────┴────────┴────────┘                 └────────┴────────┴────────┘
-  ), [_GER2] = LAYOUT(
+  ), [_KYR_LEFT] = LAYOUT(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
-      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                            XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_ENT,
+      DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,                               DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
       _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                            XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, DEAD,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
       M_ENG,   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                            XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-      M_PROG,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, DEAD,             DEAD,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+      M_PROG,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, DEAD,             _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
-                                     _______, _______, _______,                   _______, _______, L_G3
+                                     _______, _______, _______,                   _______, _______, L_KYR3
   //                               └────────┴────────┴────────┘                 └────────┴────────┴────────┘
-  ), [_GER3] = LAYOUT( // ANKI
+  ), [_KYR_RGHT] = LAYOUT(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
-      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                            XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_ENT,
+      DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,                               DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
       XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                            XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, DEAD,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
       XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                            XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, DEAD,             DEAD,    KC_1,    KC_2,    KC_3,    KC_4,    XXXXXXX, XXXXXXX,
+      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, DEAD,             _______, KC_1,    KC_2,    KC_3,    KC_4,    XXXXXXX, XXXXXXX,
+  //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
+                                     _______, _______, _______,                   _______, _______, _______
+  //                               └────────┴────────┴────────┘                 └────────┴────────┴────────┘
+  ), [_KYR_DOWN] = LAYOUT(
+  //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
+      DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,                               DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,
+  //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
+      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                            XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, DEAD,
+  //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
+      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                            XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+  //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
+      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, DEAD,             _______, KC_1,    KC_2,    KC_3,    KC_4,    XXXXXXX, XXXXXXX,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
                                      _______, _______, _______,                   _______, _______, _______
   //                               └────────┴────────┴────────┘                 └────────┴────────┴────────┘
@@ -339,14 +377,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 void lights_on(layer_state_t state) {
     // This is all probably easier with a bunch of bit masks, but heck
-    rgblight_set_layer_state(0, layer_state_cmp(state, _ENG) || !(layer_state_cmp(state, _PROG) || layer_state_cmp(state, _GER)));
+    rgblight_set_layer_state(0, layer_state_cmp(state, _ENG) || !(layer_state_cmp(state, _PROG) || layer_state_cmp(state, _KYRIA)));
     rgblight_set_layer_state(1, layer_state_cmp(state, _PROG));
-    rgblight_set_layer_state(2, layer_state_cmp(state, _GER));
+    rgblight_set_layer_state(2, layer_state_cmp(state, _KYRIA));
 
-    rgblight_set_layer_state(3, layer_state_cmp(state, _ENG1) || layer_state_cmp(state, _PROG1) || layer_state_cmp(state, _GER1) ||
-        layer_state_cmp(state, _ENG3) || layer_state_cmp(state, _PROG3) || layer_state_cmp(state, _GER3));
-    rgblight_set_layer_state(4, layer_state_cmp(state, _ENG2) || layer_state_cmp(state, _PROG2) || layer_state_cmp(state, _GER2) ||
-        layer_state_cmp(state, _ENG3) || layer_state_cmp(state, _PROG3) || layer_state_cmp(state, _GER3));
+    rgblight_set_layer_state(3, layer_state_cmp(state, _ENG1) || layer_state_cmp(state, _PROG1) || layer_state_cmp(state, _KYR_UP) ||
+        layer_state_cmp(state, _ENG3) || layer_state_cmp(state, _PROG3) || layer_state_cmp(state, _KYR_RGHT));
+    rgblight_set_layer_state(4, layer_state_cmp(state, _ENG2) || layer_state_cmp(state, _PROG2) || layer_state_cmp(state, _KYR_LEFT) ||
+        layer_state_cmp(state, _ENG3) || layer_state_cmp(state, _PROG3) || layer_state_cmp(state, _KYR_RGHT));
 }
 
 void keyboard_post_init_user(void) {
@@ -360,10 +398,15 @@ void keyboard_post_init_user(void) {
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
         case MAC_UM:
-	    if (record->event.pressed) {
-	        SEND_STRING(SS_RALT("u")); // send RALT + U = umlaut on Mac
-	    }
-	    break;
+            if (record->event.pressed) {
+                SEND_STRING(SS_RALT("u")); // send RALT + U = umlaut on Mac
+            }
+            break;
+        case VIM_WR:
+            if (record->event.pressed) {
+                SEND_STRING(":w"SS_TAP(X_ENT));
+            }
+            break;
     }
     dprintf("KL: kc: 0x%04X, col: %u, row: %u, pressed: %b, time: %u, interrupt: %b, count: %u\n", keycode, record->event.key.col, record->event.key.row, record->event.pressed, record->event.time, record->tap.interrupted, record->tap.count);
     dprintf("Default: %X  Current: %X  Highest: %X\n\n", default_layer_state, layer_state, get_highest_layer(layer_state));
@@ -421,7 +464,7 @@ void encoder_update_user(uint8_t index, bool clockwise) {
     switch (kabit_layer) {
         case _ENG:
 	case _PROG:
-	case _GER:
+	case _KYRIA:
 	    if (clockwise) {
 	        tap_code(KC_VOLU);
 	    } else {
@@ -430,7 +473,7 @@ void encoder_update_user(uint8_t index, bool clockwise) {
 	    break;
 	case _ENG1:
 	case _PROG1:
-	case _GER1:
+	case _KYR_UP:
 	    if (clockwise) {
             tap_code(KC_PGDN);
 	    } else {
@@ -442,18 +485,18 @@ void encoder_update_user(uint8_t index, bool clockwise) {
 	    if (clockwise) {
             change_to = X_PROG;
 	    } else {
-            change_to = X_GER;
+            change_to = X_KYRIA;
 	    }
 	    break;
 	case _PROG2:
 	    change = true;
 	    if (clockwise) {
-            change_to = X_GER;
+            change_to = X_KYRIA;
 	    } else {
             change_to = X_ENG;
 	    }
 	    break;
-	case _GER2:
+	case _KYR_LEFT:
 	    change = true;
 	    if (clockwise) {
             change_to = X_ENG;
