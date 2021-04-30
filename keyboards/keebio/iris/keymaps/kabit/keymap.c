@@ -185,10 +185,14 @@ enum layer_names {   //              |      |||| |||| |||/         |
 #define KP_B    LT(_PROG2, KC_B)
 #define KP_K    LT(_PROG2, KC_K)
 #define KP_M    LT(_PROG1, KC_M)
+#define KK_X    LT(_KYR_DOWN, KC_X)
+#define KK_C    LT(_KYR_RGHT, KC_C)
 #define KK_V    LT(_KYR_UP, KC_V)
 #define KK_B    LT(_KYR_LEFT, KC_B)
 #define KK_K    LT(_KYR_LEFT, KC_K)
 #define KK_M    LT(_KYR_UP, KC_M)
+#define KK_COMM LT(_KYR_RGHT, KC_COMM)
+#define KK_DOT  LT(_KYR_DOWN, KC_DOT)
 
 // Layer Key Macros
 #define M_ENG   DF(_ENG)
@@ -204,10 +208,11 @@ enum layer_names {   //              |      |||| |||| |||/         |
 #define L_P3    TT(_PROG3)
 //
 #define M_KYRIA   DF(_KYRIA)
-#define L_KYR0    TT(_KYRIA)
-#define L_KYR1    TT(_KYR_UP)
-#define L_KYR2    TT(_KYR_LEFT)
-#define L_KYR3    TT(_KYR_RGHT)
+#define L_K0      TT(_KYRIA)
+#define L_KU      TT(_KYR_UP)
+#define L_KL      TT(_KYR_LEFT)
+#define L_KR      TT(_KYR_RGHT)
+#define L_KD      TT(_KYR_DOWN)
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
@@ -316,47 +321,47 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
       DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,                               DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-      KC_TAB,  KC_Q,    KC_W,    KC_F,    KC_P,    KC_G,                               KC_J,    KC_L,    KC_U,    KC_Y,    KC_SCLN, KC_GRV,
+      KC_TAB,  KC_Q,    KC_W,    KC_F,    KC_P,    KC_G,                               KC_J,    KC_L,    KC_U,    KC_Y,    KC_SCLN, KC_BSPC,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-      KC_LALT, KT_A,    KT_R,    KT_S,    KT_T,    KC_D,                               KC_H,    KT_N,    KT_E,    KT_I,    KT_O,    KC_QUOT,
+      L_KU,    KT_A,    KT_R,    KT_S,    KT_T,    KC_D,                               KC_H,    KT_N,    KT_E,    KT_I,    KT_O,    L_KR,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-      KC_LCTL, KC_Z,    KC_X,    KC_C,    KK_V,    KK_B,    KC_MUTE,          KC_BSPC, KK_K,    KK_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_BSLS,
+      L_KL,    KC_Z,    KK_X,    KK_C,    KK_V,    KK_B,    KC_MUTE,          KC_ESC,  KK_K,    KK_M,    KK_COMM, KK_DOT,  KC_QUOT, L_KD,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
-                                     L_KYR2,  KC_LSFT, KC_ENT,                    KC_SPC,  KC_LGUI, L_KYR1
+                                     KC_LALT, KC_LSFT, KC_ENT,                    KC_SPC,  DEAD,    KC_RGUI
   //                               └────────┴────────┴────────┘                 └────────┴────────┴────────┘
   ), [_KYR_UP] = LAYOUT(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
       DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,                               DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-      KC_TAB,  XXXXXXX, XXXXXXX, XU_E,    XXXXXXX, XU_T,                               XU_Y,    XU_U,    XU_I,    XU_O,    XXXXXXX, XXXXXXX,
+      _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_LBRC,                            KC_RBRC, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-      KC_RALT, XU_A,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                            XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+      _______, KC_QUES, KC_EXLM, KC_SLSH, KC_BSLS, KC_LPRN,                            KC_RPRN, KC_EQL,  KC_QUOT, KC_DQUO, KC_GRV,  _______,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-      KC_RCTL, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XU_B,    KC_F13,           _______, XXXXXXX, XXXXXXX, MAC_UM,  XXXXXXX, XXXXXXX, XXXXXXX,
+      _______, XXXXXXX, XXXXXXX, XXXXXXX, KC_UNDS, KC_LCBR, KC_F13,           _______, KC_RCBR, KC_MINS, XXXXXXX, XXXXXXX, XXXXXXX, _______,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
-                                     L_KYR3,  _______, _______,                   _______, _______, _______
+                                     _______, _______, _______,                   _______, _______, _______
   //                               └────────┴────────┴────────┘                 └────────┴────────┴────────┘
   ), [_KYR_LEFT] = LAYOUT(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
       DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,                               DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-      _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                            XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, DEAD,
+      _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                            KC_7,    KC_8,    KC_9,    XXXXXXX, XXXXXXX, _______,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-      M_ENG,   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                            XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+      _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                            KC_4,    KC_5,    KC_6,    XXXXXXX, XXXXXXX, _______,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-      M_PROG,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, DEAD,             _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+      _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______,          KC_0,    KC_1,    KC_2,    KC_3,    XXXXXXX, XXXXXXX, _______,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
-                                     _______, _______, _______,                   _______, _______, L_KYR3
+                                     _______, _______, _______,                   _______, _______, _______
   //                               └────────┴────────┴────────┘                 └────────┴────────┴────────┘
   ), [_KYR_RGHT] = LAYOUT(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
       DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,                               DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                            XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, DEAD,
+      _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                            XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                            XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+      _______, KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                               KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    _______,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, DEAD,             _______, KC_1,    KC_2,    KC_3,    KC_4,    XXXXXXX, XXXXXXX,
+      _______, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F11,           KC_F12,  KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  _______,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
                                      _______, _______, _______,                   _______, _______, _______
   //                               └────────┴────────┴────────┘                 └────────┴────────┴────────┘
@@ -364,11 +369,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
       DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,                               DEAD,    DEAD,    DEAD,    DEAD,    DEAD,    DEAD,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                            XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, DEAD,
+      _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                            XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                            XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+      _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                            XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, DEAD,             _______, KC_1,    KC_2,    KC_3,    KC_4,    XXXXXXX, XXXXXXX,
+      _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______,          _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
                                      _______, _______, _______,                   _______, _______, _______
   //                               └────────┴────────┴────────┘                 └────────┴────────┴────────┘
