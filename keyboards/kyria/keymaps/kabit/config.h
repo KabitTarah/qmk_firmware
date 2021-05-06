@@ -32,5 +32,14 @@
 #define SPLIT_USB_DETECT
 #define NO_USB_STARTUP_CHECK
 
-#define LEADER_TIMOUT 250
+// Leader key settings
+#define LEADER_TIMEOUT 250
 #define LEADER_PER_KEY_TIMING
+
+// tap hold settings
+#define TAPPING_TERM 300
+#define IGNORE_MOD_TAP_INTERRUPT
+#define BILATERAL_COMBINATIONS 500
+
+// Two taps to change layers
+#define TAPPING_TOGGLE 2
