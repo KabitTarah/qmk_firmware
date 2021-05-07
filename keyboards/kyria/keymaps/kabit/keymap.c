@@ -1,4 +1,4 @@
-/* Copyright 2019 Thomas Baart <thomas@splitkb.com>
+/* Copyright 2021 Tarah Tamayo
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -49,14 +49,16 @@ layer_state_t _max_layer = _QWERTY;
 #define KT_E    MT(MOD_LSFT, KC_E)
 #define KT_I    MT(MOD_LALT, KC_I)
 #define KT_O    MT(MOD_LCTL, KC_O)
-#define KT_X    LT(_DOWN, KC_X)
-#define KT_C    LT(_RGHT, KC_C)
-#define KT_V    LT(_UP, KC_V)
-#define KT_B    LT(_LEFT, KC_B)
-#define KT_K    LT(_LEFT, KC_K)
-#define KT_M    LT(_UP, KC_M)
-#define KT_COMM LT(_RGHT, KC_COMM)
-#define KT_DOT  LT(_DOWN, KC_DOT)
+#define KT_Z    LT(_DOWN, KC_Z)
+#define KT_X    LT(_RGHT, KC_X)
+#define KT_C    LT(_UP, KC_C)
+#define KT_V    LT(_LEFT, KC_V)
+#define KT_B    LT(_DOWN, KC_B)
+#define KT_K    LT(_DOWN, KC_K)
+#define KT_M    LT(_LEFT, KC_M)
+#define KT_COMM LT(_UP, KC_COMM)
+#define KT_DOT  LT(_RGHT, KC_DOT)
+#define KT_QUOT LT(_DOWN, KC_QUOT)
 #define TO_UP   TO(_UP)
 #define TO_LEFT TO(_LEFT)
 #define TO_RGHT TO(_RGHT)
@@ -69,11 +71,10 @@ layer_state_t _max_layer = _QWERTY;
 #define KQ_S    MT(MOD_LALT, KC_S)
 #define KQ_D    MT(MOD_LSFT, KC_D)
 #define KQ_F    MT(MOD_LGUI, KC_F)
-#define KQ_J    MT(MOD_LGUI, KC_N)
-#define KQ_K    MT(MOD_LSFT, KC_E)
-#define KQ_L    MT(MOD_LALT, KC_I)
+#define KQ_J    MT(MOD_LGUI, KC_J)
+#define KQ_K    MT(MOD_LSFT, KC_K)
+#define KQ_L    MT(MOD_LALT, KC_L)
 #define KQ_SCLN MT(MOD_LCTL, KC_SCLN)
-#define KQ_N    LT(_LEFT, KC_N)
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_COLEMAK] = LAYOUT( // **C** COLEMAK BASE LAYER **C**
@@ -82,9 +83,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  // |----------+---------+---------+---------+---------+---------|                                              |---------+---------+---------+---------+---------+----------|
       TT_UP  ,   KT_A   ,  KT_R   ,  KT_S   ,  KT_T   ,  KC_D   ,                                                 KC_H   ,  KT_N   ,  KT_E   ,  KT_I   ,  KT_O   ,  TT_RGHT,
  // |----------+---------+---------+---------+---------+---------+---------------------.  ,---------------------+---------+---------+---------+---------+---------+----------|
-      TT_LEFT,   KC_Z   ,  KT_X   ,  KT_C   ,  KT_V   ,  KT_B   ,  KC_DEL ,   KC_LEAD,      KT_CCCV,   KC_LGUI,   KT_K   ,  KT_M   ,  KT_COMM,  KT_DOT ,  KC_QUOT,  TT_DOWN,
+      TT_LEFT,   KT_Z   ,  KT_X   ,  KT_C   ,  KT_V   ,  KT_B   ,  KC_DEL ,   KC_LEAD,      KT_CCCV,   KC_LGUI,   KT_K   ,  KT_M   ,  KT_COMM,  KT_DOT ,  KT_QUOT,  TT_DOWN,
  // `------------------------------+---------+---------+---------+----------+----------|  |----------+----------+---------+---------+---------+------------------------------'
-                                     KC_LCTL,  KC_GRV ,  KC_TAB ,  KC_LSFT,   KC_ENT ,      KC_ESC ,   KC_SPC ,   KC_BSPC,  KC_RALT,  KC_RCTL
+                                     KC_LALT,  KC_TAB ,  KC_BSPC,  KC_LSFT,   KC_ESC ,      KC_SPC ,   KC_SPC ,   KC_ENT ,  KC_GRV ,  KC_RALT
  //                                `---------+---------+---------+----------+----------|  |----------+----------+---------+---------+---------'
     ),
     [_QWERTY] = LAYOUT( // **C** QWERTY BASE LAYER **C**
@@ -93,9 +94,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  // |----------+---------+---------+---------+---------+---------|                                              |---------+---------+---------+---------+---------+----------|
       TT_UP  ,   KT_A   ,  KQ_S   ,  KQ_D   ,  KQ_F   ,  KC_G   ,                                                 KC_H   ,  KQ_J   ,  KQ_K   ,  KQ_L   ,  KQ_SCLN,  TT_RGHT,
  // |----------+---------+---------+---------+---------+---------+---------------------.  ,---------------------+---------+---------+---------+---------+---------+----------|
-      TT_LEFT,   KC_Z   ,  KT_X   ,  KT_C   ,  KT_V   ,  KT_B   ,  KC_DEL ,   KC_LEAD,      KT_CCCV,   KC_LGUI,   KQ_N   ,  KT_M   ,  KT_COMM,  KT_DOT ,  KC_QUOT,  TT_DOWN,
+      TT_LEFT,   KT_Z   ,  KT_X   ,  KT_C   ,  KT_V   ,  KT_B   ,  KC_DEL ,   KC_LEAD,      KT_CCCV,   KC_LGUI,   KC_N   ,  KT_M   ,  KT_COMM,  KT_DOT ,  KT_QUOT,  TT_DOWN,
  // `------------------------------+---------+---------+---------+----------+----------|  |----------+----------+---------+---------+---------+------------------------------'
-                                     KC_LCTL,  KC_GRV ,  KC_TAB ,  KC_LSFT,   KC_ENT ,      KC_ESC ,   KC_SPC ,   KC_BSPC,  KC_RALT,  KC_RCTL
+                                     KC_LALT,  KC_TAB ,  KC_BSPC,  KC_PSFT,   KC_ESC ,      KC_SPC ,   KC_SPC ,   KC_ENT ,  KC_GRV ,  KC_RALT
  //                                `---------+---------+---------+----------+----------|  |----------+----------+---------+---------+---------'
     ),
     [_UP] = LAYOUT( // **C** Symbols layer **C**
@@ -115,9 +116,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  // |----------+---------+---------+---------+---------+---------|                                              |---------+---------+---------+---------+---------+----------|
       TT_UP  ,   KT_O   ,  KT_I   ,  KT_E   ,  KT_N   ,  KC_H   ,                                                 KC_4   ,  KC_5   ,  KC_6   ,  KC_PPLS,  KC_PAST,  TT_RGHT,
  // |----------+---------+---------+---------+---------+---------+---------------------.  ,---------------------+---------+---------+---------+---------+---------+----------|
-      TT_LEFT,   KC_QUOT,  KT_DOT ,  KT_COMM,  KT_M   ,  KT_K   ,  _______,   _______,      KC_PDOT,   KC_0   ,   KC_1   ,  KC_2   ,  KC_3   ,  KC_PEQL,  KC_ENT ,  TT_DOWN,
+      TT_LEFT,   KT_QUOT,  KT_DOT ,  KT_COMM,  KT_M   ,  KT_K   ,  _______,   _______,      KC_PDOT,   KC_0   ,   KC_1   ,  KC_2   ,  KC_3   ,  KC_PEQL,  KC_ENT ,  TT_DOWN,
  // `------------------------------+---------+---------+---------+----------+----------|  |----------+----------+---------+---------+---------+------------------------------'
-                                     _______,  _______,  _______,  _______,   _______,      _______,   _______,   _______,  _______,  _______
+                                     _______,  _______,  _______,  _______,   _______,      KC_LGUI,   _______,   _______,  _______,  _______
  //                                `---------+---------+---------+----------+----------|  |----------+----------+---------+---------+---------'
     ),
     [_RGHT] = LAYOUT( // **C** Number/symbol row and F-keys **C**
@@ -126,9 +127,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  // |----------+---------+---------+---------+---------+---------|                                              |---------+---------+---------+---------+---------+----------|
       TT_UP  ,   KC_1   ,  KC_2   ,  KC_3   ,  KC_4   ,  KC_5   ,                                                 KC_6   ,  KC_7   ,  KC_8   ,  KC_9   ,  KC_O   ,  TT_RGHT,
  // |----------+---------+---------+---------+---------+---------+---------------------.  ,---------------------+---------+---------+---------+---------+---------+----------|
-      TT_LEFT,   KC_F1  ,  KC_F2  ,  KC_F3  ,  KC_F4  ,  KC_F5  ,  KC_F11 ,   KC_F12 ,      KC_F13 ,   KC_F14 ,   KC_F6  ,  KC_F7  ,  KC_F8  ,  KC_F9  ,  KC_F10 ,  TT_DOWN,
+      TT_LEFT,   KC_F1  ,  KC_F2  ,  KC_F3  ,  KC_F4  ,  KC_F5  ,  KC_F11 ,   KC_F12 ,      KC_F13 ,   _______,   KC_F6  ,  KC_F7  ,  KC_F8  ,  KC_F9  ,  KC_F10 ,  TT_DOWN,
  // `------------------------------+---------+---------+---------+----------+----------|  |----------+----------+---------+---------+---------+------------------------------'
-                                     _______,  _______,  _______,  _______,   _______,      _______,   _______,   _______,  _______,  _______
+                                     _______,  _______,  _______,  _______,   _______,      KC_LGUI,   _______,   _______,  _______,  _______
  //                                `---------+---------+---------+----------+----------|  |----------+----------+---------+---------+---------'
     ),
     [_DOWN] = LAYOUT( // TBD
