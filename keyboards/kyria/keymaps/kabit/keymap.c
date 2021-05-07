@@ -96,7 +96,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  // |----------+---------+---------+---------+---------+---------+---------------------.  ,---------------------+---------+---------+---------+---------+---------+----------|
       TT_LEFT,   KT_Z   ,  KT_X   ,  KT_C   ,  KT_V   ,  KT_B   ,  KC_DEL ,   KC_LEAD,      KT_CCCV,   KC_LGUI,   KC_N   ,  KT_M   ,  KT_COMM,  KT_DOT ,  KT_QUOT,  TT_DOWN,
  // `------------------------------+---------+---------+---------+----------+----------|  |----------+----------+---------+---------+---------+------------------------------'
-                                     KC_LALT,  KC_TAB ,  KC_BSPC,  KC_PSFT,   KC_ESC ,      KC_SPC ,   KC_SPC ,   KC_ENT ,  KC_GRV ,  KC_RALT
+                                     KC_LALT,  KC_TAB ,  KC_BSPC,  KC_LSFT,   KC_ESC ,      KC_SPC ,   KC_SPC ,   KC_ENT ,  KC_GRV ,  KC_RALT
  //                                `---------+---------+---------+----------+----------|  |----------+----------+---------+---------+---------'
     ),
     [_UP] = LAYOUT( // **C** Symbols layer **C**
