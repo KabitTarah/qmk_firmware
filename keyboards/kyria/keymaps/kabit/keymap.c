@@ -18,6 +18,7 @@
 enum layers {
     _COLEMAK,
     _QWERTY,
+    _SPEED,
     _UP,
     _LEFT,
     _RGHT,
@@ -27,6 +28,7 @@ enum layers {
 // Base Layer Masks
 #define X_COLEMAK	1 << _COLEMAK
 #define X_QWERTY	1 << _QWERTY
+#define X_SPEED 	1 << _SPEED
 
 enum custom_keycodes {
     MAC_UM = SAFE_RANGE,
@@ -99,6 +101,17 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                      KC_LALT,  KC_TAB ,  KC_BSPC,  KC_LSFT,   KC_ESC ,      KC_SPC ,   KC_SPC ,   KC_ENT ,  KC_GRV ,  KC_RALT
  //                                `---------+---------+---------+----------+----------|  |----------+----------+---------+---------+---------'
     ),
+    [_SPEED] = LAYOUT( // **C** COLEMAK SPEED LAYER **C**
+ // ,------------------------------------------------------------.                                              ,------------------------------------------------------------.
+      KC_ESC ,   KC_Q   ,  KC_W   ,  KC_F   ,  KC_P   ,  KC_G   ,                                                 KC_J   ,  KC_L   ,  KC_U   ,  KC_Y   ,  KC_SCLN,  KC_MUTE,
+ // |----------+---------+---------+---------+---------+---------|                                              |---------+---------+---------+---------+---------+----------|
+      XXXXXXX,   KC_A   ,  KC_R   ,  KC_S   ,  KC_T   ,  KC_D   ,                                                 KC_H   ,  KC_N   ,  KC_E   ,  KC_I   ,  KC_O   ,  XXXXXXX,
+ // |----------+---------+---------+---------+---------+---------+---------------------.  ,---------------------+---------+---------+---------+---------+---------+----------|
+      XXXXXXX,   KC_Z   ,  KC_X   ,  KC_C   ,  KC_V   ,  KC_B   ,  KC_DEL ,   KC_LEAD,      KT_CCCV,   KC_LGUI,   KC_K   ,  KC_M   ,  KC_COMM,  KC_DOT ,  KC_QUOT,  XXXXXXX,
+ // `------------------------------+---------+---------+---------+----------+----------|  |----------+----------+---------+---------+---------+------------------------------'
+                                     XXXXXXX,  XXXXXXX,  KC_BSPC,  KC_LSFT,   XXXXXXX,      KC_SPC ,   KC_SPC ,   XXXXXXX,  XXXXXXX,  XXXXXXX
+ //                                `---------+---------+---------+----------+----------|  |----------+----------+---------+---------+---------'
+    ),
     [_UP] = LAYOUT( // **C** Symbols layer **C**
  // ,------------------------------------------------------------.                                              ,------------------------------------------------------------.
       XXXXXXX,   KC_PERC,  KC_CIRC,  KC_AMPR,  KC_PIPE,  KC_LBRC,                                                 KC_RBRC,  KC_PLUS,  KC_ASTR,  KC_DLR ,  KC_TILD,  KC_MUTE,
@@ -165,6 +178,12 @@ static const char PROGMEM kyria_logo[] = {
     0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  1,  3,  7, 15, 14, 30, 28, 60, 56,120,112,112,112,224,224,224,224,224,224,224,224,224,224,224,224,224,224,224,224,112,112,112,120, 56, 60, 28, 30, 14, 15,  7,  3,  1,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
 };
 
+static const char PROGMEM qmk_logo[] = {
+    0x80,0x81,0x82,0x83,0x84,0x85,0x86,0x87,0x88,0x89,0x8a,0x8b,0x8c,0x8d,0x8e,0x8f,0x90,0x91,0x92,0x93,0x94,
+    0xa0,0xa1,0xa2,0xa3,0xa4,0xa5,0xa6,0xa7,0xa8,0xa9,0xaa,0xab,0xac,0xad,0xae,0xaf,0xb0,0xb1,0xb2,0xb3,0xb4,
+    0xc0,0xc1,0xc2,0xc3,0xc4,0xc5,0xc6,0xc7,0xc8,0xc9,0xca,0xcb,0xcc,0xcd,0xce,0xcf,0xd0,0xd1,0xd2,0xd3,0xd4,0
+};
+
 char oled_register[4][1024];
 bool enable_animation = false;
 
@@ -173,11 +192,6 @@ static void render_loop(void) {
 }
 
 static void render_qmk_logo(void) {
-  static const char PROGMEM qmk_logo[] = {
-    0x80,0x81,0x82,0x83,0x84,0x85,0x86,0x87,0x88,0x89,0x8a,0x8b,0x8c,0x8d,0x8e,0x8f,0x90,0x91,0x92,0x93,0x94,
-    0xa0,0xa1,0xa2,0xa3,0xa4,0xa5,0xa6,0xa7,0xa8,0xa9,0xaa,0xab,0xac,0xad,0xae,0xaf,0xb0,0xb1,0xb2,0xb3,0xb4,
-    0xc0,0xc1,0xc2,0xc3,0xc4,0xc5,0xc6,0xc7,0xc8,0xc9,0xca,0xcb,0xcc,0xcd,0xce,0xcf,0xd0,0xd1,0xd2,0xd3,0xd4,0};
-
   oled_write_P(qmk_logo, false);
 }
 
@@ -194,6 +208,9 @@ static void render_status(void) {
             break;
         case _QWERTY:
             oled_write_P(PSTR("QWERTY    "), false);
+            break;
+        case _SPEED:
+            oled_write_P(PSTR("SPEED     "), false);
             break;
     }
 
@@ -289,25 +306,19 @@ void matrix_scan_user(void) {
             default_layer_set(X_COLEMAK);
             layer_state_set(X_COLEMAK);
         }
+        SEQ_FOUR_KEYS(KC_F, KC_A, KC_S, KC_T) {
+            // ** FAST -> SPEED (MonkeyType)
+            _layer = _SPEED;
+            default_layer_set(X_SPEED);
+            layer_state_set(X_SPEED);
+        }
+        SEQ_FOUR_KEYS(KC_S, KC_L, KC_O, KC_W) {
+            // ** SLOW -> COLEMAK
+            _layer = _COLEMAK;
+            default_layer_set(X_COLEMAK);
+            layer_state_set(X_COLEMAK);
+        }
         // *************************** //
-
-        // ** Boilerplate from docs.qmk.fm
-        // SEQ_ONE_KEY(KC_F) {
-        //     // Anything you can do in a macro.
-        //     SEND_STRING("QMK is awesome.");
-        // }
-        // SEQ_TWO_KEYS(KC_D, KC_D) {
-        //     SEND_STRING(SS_LCTL("a") SS_LCTL("c"));
-        // }
-        // SEQ_THREE_KEYS(KC_D, KC_D, KC_S) {
-        //     SEND_STRING("https://start.duckduckgo.com\n");
-        // }
-        // SEQ_TWO_KEYS(KC_A, KC_S) {
-        //     register_code(KC_LGUI);
-        //     register_code(KC_S);
-        //     unregister_code(KC_S);
-        //     unregister_code(KC_LGUI);
-        // }
     }
 }
 
