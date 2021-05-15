@@ -198,7 +198,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 // Send Mac shortcut for Umlaut a
                 if (get_shift_state()) {
                     // !! Uppercase Umlauts in MacOS not working in Macro !!
+                    unregister_code(KC_LSFT);
                     SEND_STRING(SS_RALT("u")SS_LSFT("a"));
+                    register_code(KC_LSFT);
                 } else {
                     SEND_STRING(SS_RALT("u")"a");
                 }
@@ -206,7 +208,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             case KT_UM_O:
                 // Send Mac shortcut for Umlaut o
                 if (get_shift_state()) {
+                    unregister_code(KC_LSFT);
                     SEND_STRING(SS_RALT("u")SS_LSFT("o"));
+                    register_code(KC_LSFT);
                 } else {
                     SEND_STRING(SS_RALT("u")"o");
                 }
@@ -214,7 +218,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             case KT_UM_U:
                 // Send Mac shortcut for Umlaut u
                 if (get_shift_state()) {
+                    unregister_code(KC_LSFT);
                     SEND_STRING(SS_RALT("u")SS_LSFT("u"));
+                    register_code(KC_LSFT);
                 } else {
                     SEND_STRING(SS_RALT("u")"u");
                 }
