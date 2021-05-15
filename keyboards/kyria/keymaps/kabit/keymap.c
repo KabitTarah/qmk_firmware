@@ -34,6 +34,10 @@ enum custom_keycodes {
     MAC_UM = SAFE_RANGE,
     VIM_WR,
     KT_CCCV,  // Initiate ctrl-c ctrl-v sequence (OS Specific)
+    KT_ESZ,   // Eszett
+    KT_UM_A,  // A Umlaut
+    KT_UM_U,  // U Umlaut
+    KT_UM_O,  // O Umlaut
 };
 
 // We want to keep track of our current default layer. This starts at COLEMAK. It's easier to keep track this way!
@@ -149,7 +153,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  // ,------------------------------------------------------------.                                              ,------------------------------------------------------------.
       XXXXXXX,   XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,                                                 XXXXXXX,  XXXXXXX,  KC_UP  ,  XXXXXXX,  XXXXXXX,  KC_MUTE,
  // |----------+---------+---------+---------+---------+---------|                                              |---------+---------+---------+---------+---------+----------|
-      TT_UP  ,   XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,                                                 XXXXXXX,  KC_LEFT,  KC_DOWN,  KC_RGHT,  XXXXXXX,  TT_RGHT,
+      TT_UP  ,   KT_UM_A,  KT_UM_O,  KT_ESZ ,  KT_UM_U,  XXXXXXX,                                                 XXXXXXX,  KC_LEFT,  KC_DOWN,  KC_RGHT,  XXXXXXX,  TT_RGHT,
  // |----------+---------+---------+---------+---------+---------+---------------------.  ,---------------------+---------+---------+---------+---------+---------+----------|
       TT_LEFT,   XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  KC_DOT ,   _______,      _______,   _______,   XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  TT_DOWN,
  // `------------------------------+---------+---------+---------+----------+----------|  |----------+----------+---------+---------+---------+------------------------------'
@@ -160,6 +164,30 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 void keyboard_post_init_user(void) {
     debug_enable = true;
+}
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    if (record->event.pressed) {
+        switch (keycode) {
+            case KT_ESZ:
+                // Send Mac shortcut for Eszett
+                SEND_STRING(SS_RALT("s"));
+                break;
+            case KT_UM_A:
+                // Send Mac shortcut for Umlaut a
+                SEND_STRING(SS_RALT("u")"a");
+                break;
+            case KT_UM_O:
+                // Send Mac shortcut for Umlaut o
+                SEND_STRING(SS_RALT("u")"o");
+                break;
+            case KT_UM_U:
+                // Send Mac shortcut for Umlaut u
+                SEND_STRING(SS_RALT("u")"u");
+                break;
+        }
+    }
+    return true;
 }
 
 //#ifdef OLED_DRIVER_ENABLE
