@@ -11,4 +11,5 @@
 ## RIGHT LAYER - NUMBER ROW & F-KEYS
 ![See keymap.c](https://raw.githubusercontent.com/KabitTarah/qmk_firmware/kabit/keyboards/kyria/keymaps/kabit/images/kyria-right-layer.png)
 
-## DOWN LAYER - TBD
+## DOWN LAYER - MOVEMENT
+![See keymap.c](https://raw.githubusercontent.com/KabitTarah/qmk_firmware/kabit/keyboards/kyria/keymaps/kabit/images/kyria-down-layer.png)
