@@ -15,6 +15,11 @@
  */
 #include QMK_KEYBOARD_H
 
+bool get_shift_state(void);
+bool get_ctrl_state(void);
+bool get_alt_state(void);
+bool get_gui_state(void);
+
 enum layers {
     _COLEMAK,
     _QWERTY,
@@ -166,24 +171,53 @@ void keyboard_post_init_user(void) {
     debug_enable = true;
 }
 
+bool get_shift_state(void) {
+    return get_mods() & MOD_MASK_SHIFT;
+}
+
+bool get_ctrl_state(void) {
+    return get_mods() & MOD_MASK_CTRL;
+}
+
+bool get_alt_state(void) {
+    return get_mods() & MOD_MASK_ALT;
+}
+
+bool get_gui_state(void) {
+    return get_mods() & MOD_MASK_GUI;
+}
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     if (record->event.pressed) {
         switch (keycode) {
             case KT_ESZ:
-                // Send Mac shortcut for Eszett
+                // Send Mac shortcut for Eszett (no shifted version)
                 SEND_STRING(SS_RALT("s"));
                 break;
             case KT_UM_A:
                 // Send Mac shortcut for Umlaut a
-                SEND_STRING(SS_RALT("u")"a");
+                if (get_shift_state()) {
+                    // !! Uppercase Umlauts in MacOS not working in Macro !!
+                    SEND_STRING(SS_RALT("u")SS_LSFT("a"));
+                } else {
+                    SEND_STRING(SS_RALT("u")"a");
+                }
                 break;
             case KT_UM_O:
                 // Send Mac shortcut for Umlaut o
-                SEND_STRING(SS_RALT("u")"o");
+                if (get_shift_state()) {
+                    SEND_STRING(SS_RALT("u")SS_LSFT("o"));
+                } else {
+                    SEND_STRING(SS_RALT("u")"o");
+                }
                 break;
             case KT_UM_U:
                 // Send Mac shortcut for Umlaut u
-                SEND_STRING(SS_RALT("u")"u");
+                if (get_shift_state()) {
+                    SEND_STRING(SS_RALT("u")SS_LSFT("u"));
+                } else {
+                    SEND_STRING(SS_RALT("u")"u");
+                }
                 break;
         }
     }
