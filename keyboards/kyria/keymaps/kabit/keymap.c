@@ -20,6 +20,13 @@ bool get_ctrl_state(void);
 bool get_alt_state(void);
 bool get_gui_state(void);
 
+enum os_type {
+    _MAC,
+    _WIN,
+    _LINUX,
+};
+layer_state_t os = _MAC;
+
 enum layers {
     _COLEMAK,
     _QWERTY,
@@ -191,38 +198,61 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     if (record->event.pressed) {
         switch (keycode) {
             case KT_ESZ:
-                // Send Mac shortcut for Eszett (no shifted version)
+                // Send shortcut for Eszett (no shifted version)
                 SEND_STRING(SS_RALT("s"));
                 break;
             case KT_UM_A:
-                // Send Mac shortcut for Umlaut a
+                // Send shortcut for Umlaut a
                 if (get_shift_state()) {
-                    // !! Uppercase Umlauts in MacOS not working in Macro !!
                     unregister_code(KC_LSFT);
-                    SEND_STRING(SS_RALT("u")SS_LSFT("a"));
+                    if (os == _MAC) {
+                        SEND_STRING(SS_RALT("u")"A");
+                    } else {
+                        SEND_STRING(SS_RALT("\"")"A");
+                    }
                     register_code(KC_LSFT);
                 } else {
-                    SEND_STRING(SS_RALT("u")"a");
+                    if (os == _MAC) {
+                        SEND_STRING(SS_RALT("u")"a");
+                    } else {
+                        SEND_STRING(SS_RALT("\"")"a");
+                    }
                 }
                 break;
             case KT_UM_O:
-                // Send Mac shortcut for Umlaut o
+                // Send shortcut for Umlaut o
                 if (get_shift_state()) {
                     unregister_code(KC_LSFT);
-                    SEND_STRING(SS_RALT("u")SS_LSFT("o"));
+                    if (os == _MAC) {
+                        SEND_STRING(SS_RALT("u")"O");
+                    } else {
+                        SEND_STRING(SS_RALT("\"")"O");
+                    }
                     register_code(KC_LSFT);
                 } else {
-                    SEND_STRING(SS_RALT("u")"o");
+                    if (os == _MAC) {
+                        SEND_STRING(SS_RALT("u")"o");
+                    } else {
+                        SEND_STRING(SS_RALT("\"")"o");
+                    }
                 }
                 break;
             case KT_UM_U:
-                // Send Mac shortcut for Umlaut u
+                // Send shortcut for Umlaut u
                 if (get_shift_state()) {
                     unregister_code(KC_LSFT);
-                    SEND_STRING(SS_RALT("u")SS_LSFT("u"));
+                    if (os == _MAC) {
+                        SEND_STRING(SS_RALT("u")"U");
+                    } else {
+                        SEND_STRING(SS_RALT("\"")"U");
+                    }
                     register_code(KC_LSFT);
                 } else {
-                    SEND_STRING(SS_RALT("u")"u");
+                    if (os == _MAC) {
+                        SEND_STRING(SS_RALT("u")"u");
+                    } else {
+                        SEND_STRING(SS_RALT("\"")"u");
+                    }
                 }
                 break;
         }
@@ -301,7 +331,18 @@ static void render_status(void) {
     } else {
         oled_write_P(PSTR(" \n"), false);
     }
-    oled_write_P(PSTR("                 "), false);
+    oled_write_P(PSTR("  OS:  "), false);
+    switch (os) {
+        case _MAC:
+            oled_write_P(PSTR("MAC       "), false);
+            break;
+        case _WIN:
+            oled_write_P(PSTR("WINDOWS   "), false);
+            break;
+        case _LINUX:
+            oled_write_P(PSTR("LINUX     "), false);
+            break;
+    }
     if (layer_state_is(_DOWN)) {
         oled_write_P(PSTR("D\n"), false);
     } else {
@@ -357,6 +398,19 @@ void matrix_scan_user(void) {
         SEQ_TWO_KEYS(KC_W, KC_W) {
             // ** WW -> WEATHER REQ
             dprintf("");
+        }
+        // ************************* //
+
+        // ************************** //
+        // ** MANAGE OPERATING SYS ** //
+        SEQ_THREE_KEYS(KC_M, KC_A, KC_C) {
+            os = _MAC;
+        }
+        SEQ_THREE_KEYS(KC_W, KC_I, KC_N) {
+            os = _WIN;
+        }
+        SEQ_THREE_KEYS(KC_L, KC_N, KC_X) {
+            os = _LINUX;
         }
         // ************************* //
 
