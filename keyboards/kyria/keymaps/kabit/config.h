@@ -33,7 +33,7 @@
 #define NO_USB_STARTUP_CHECK
 
 // Leader key settings
-#define LEADER_TIMEOUT 400
+#define LEADER_TIMEOUT 500
 #define LEADER_PER_KEY_TIMING
 
 // tap hold settings
