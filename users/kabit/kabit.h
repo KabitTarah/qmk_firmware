@@ -4,6 +4,11 @@
 
 #include QMK_KEYBOARD_H
 
+bool get_shift_state(void);
+bool get_ctrl_state(void);
+bool get_alt_state(void);
+bool get_gui_state(void);
+
 enum layers {
     _COLEMAK,
     _QWERTY,
@@ -12,8 +17,13 @@ enum layers {
     _LEFT,
     _RGHT,
     _DOWN,
+    _MACRO1,
+    _MACRO2,
 };
 
+extern layer_state_t os;
+extern layer_state_t _layer;
+extern layer_state_t _max_layer;
 
 // Base Layer Masks
 #define X_COLEMAK	1 << _COLEMAK
@@ -34,14 +44,40 @@ enum custom_keycodes {
     KT_UM_A,  // A Umlaut
     KT_UM_U,  // U Umlaut
     KT_UM_O,  // O Umlaut
+    KM_PPX1,  // MACROS FOLLOW
+    KM_PAU2,
+    KM_PMI2,
+    KM_PSE1,
+    KM_PP13,
+    KM_PP14,
+    KM_PIN2,
+    KM_PNA1,
+    KM_M1A,
+    KM_M1C,
+    KM_M1D,
+    KM_IDF1,
+    KM_IDF,
+    KM_INET,
+    KM_LTE,
+    KM_CORE,
+    KM_OOB,
+    KM_VEN,
+    KM_ACC,
+    KM_WAN,
+    KM_FW,
+    KM_DIST,
+    KM_SW0,
+    KM_SW,
 };
 
 // Defined keycode macros
 #define DEAD    KC_NO
+#define KM_XXXX KC_NO
 #define KT_A    MT(MOD_LCTL, KC_A)
 #define KT_R    MT(MOD_LALT, KC_R)
 #define KT_S    MT(MOD_LSFT, KC_S)
 #define KT_T    MT(MOD_LGUI, KC_T)
+#define KT_D    LT(_LEFT, KC_D)
 #define KT_N    MT(MOD_LGUI, KC_N)
 #define KT_E    MT(MOD_LSFT, KC_E)
 #define KT_I    MT(MOD_LALT, KC_I)
@@ -56,6 +92,8 @@ enum custom_keycodes {
 #define KT_COMM LT(_UP, KC_COMM)
 #define KT_DOT  LT(_RGHT, KC_DOT)
 #define KT_QUOT LT(_DOWN, KC_QUOT)
+#define KT_ESC  LT(_MACRO, KC_ESC)
+#define KT_SPC  LT(_MACRO2, KC_SPC)
 #define TO_UP   TO(_UP)
 #define TO_LEFT TO(_LEFT)
 #define TO_RGHT TO(_RGHT)
@@ -68,6 +106,7 @@ enum custom_keycodes {
 #define KQ_S    MT(MOD_LALT, KC_S)
 #define KQ_D    MT(MOD_LSFT, KC_D)
 #define KQ_F    MT(MOD_LGUI, KC_F)
+#define KQ_G    LT(_LEFT, KC_G)
 #define KQ_J    MT(MOD_LGUI, KC_J)
 #define KQ_K    MT(MOD_LSFT, KC_K)
 #define KQ_L    MT(MOD_LALT, KC_L)
@@ -80,7 +119,7 @@ enum custom_keycodes {
 // .                           +_________+_________+_________+_________+_________+
 #define _____COLEMAK_ROW_1L_____ KC_Q    , KC_W    , KC_F    , KC_P    , KC_G
 // .                           +_________+_________+_________+_________+_________+
-#define _____COLEMAK_HRM_2L_____ KT_A    , KT_R    , KT_S    , KT_T    , KC_D
+#define _____COLEMAK_HRM_2L_____ KT_A    , KT_R    , KT_S    , KT_T    , KT_D
 // .                           +_________+_________+_________+_________+_________+
 #define _____COLEMAK_HRM_3L_____ KT_Z    , KT_X    , KT_C    , KT_V    , KT_B
 // .                           +_________+_________+_________+_________+_________+
@@ -114,7 +153,7 @@ enum custom_keycodes {
 // .                           +_________+_________+_________+_________+_________+
 #define _____QWERTY_ROW_1L_____  KC_Q    , KC_W    , KC_E    , KC_R    , KC_T
 // .                           +_________+_________+_________+_________+_________+
-#define _____QWERTY_HRM_2L_____  KT_A    , KQ_S    , KQ_D    , KQ_F    , KC_G
+#define _____QWERTY_HRM_2L_____  KT_A    , KQ_S    , KQ_D    , KQ_F    , KQ_G
 // .                           +_________+_________+_________+_________+_________+
 #define _____QWERTY_HRM_3L_____  KT_Z    , KT_X    , KT_C    , KT_V    , KT_B
 // .                           +_________+_________+_________+_________+_________+
@@ -127,5 +166,31 @@ enum custom_keycodes {
 // .                           +_________+_________+_________+_________+_________+
 #define _____QWERTY_HRM_3R_____  KT_N    , KT_M    , KT_COMM , KT_DOT  , KT_QUOT
 // .                           +_________+_________+_________+_________+_________+
+
+// !! MACROS
+// ?? EMPTY MACRO
+#define _____MACROS_XXXXXX_____  KM_XXXX,  KM_XXXX,  KM_XXXX,  KM_XXXX,  KM_XXXX
+
+// !! MACRO Layer 1
+// ??        - LEFT SIDE
+// .                           +_________+_________+_________+_________+_________+
+#define _____MACRO1_ROW_1L_____  KM_XXXX,  KM_XXXX,  KM_PP13,  KM_PP14,  KM_XXXX
+// .                           +_________+_________+_________+_________+_________+
+#define _____MACRO1_ROW_2L_____  KM_PPX1,  KM_PAU2,  KM_PMI2,  KM_PSE1,  KM_PIN2
+// .                           +_________+_________+_________+_________+_________+
+#define _____MACRO1_ROW_3L_____  KM_XXXX,  KM_XXXX,  KM_XXXX,  KM_PNA1,  KM_XXXX
+// .                           +_________+_________+_________+_________+_________+
+
+// ??        - RIGHT SIDE
+// .                           +_________+_________+_________+_________+_________+
+#define _____MACRO1_ROW_1R_____  KM_IDF1,  KM_M1A ,  KM_IDF ,  KM_M1C ,  KM_M1D
+// .                           +_________+_________+_________+_________+_________+
+#define _____MACRO1_ROW_2R_____  KM_VEN ,  KM_CORE,  KM_OOB ,  KM_ACC ,  KM_INET
+// .                           +_________+_________+_________+_________+_________+
+#define _____MACRO1_ROW_3R_____  KM_FW  ,  KM_DIST,  KM_WAN ,  KM_SW0 ,  KM_LTE
+// .                           +_________+_________+_________+_________+_________+
+
+// !! MACRO Layer 2
+// ?? Not used yet
 
 #endif

@@ -16,20 +16,8 @@
 #include QMK_KEYBOARD_H
 #include "kabit.h"
 
-bool get_shift_state(void);
-bool get_ctrl_state(void);
-bool get_alt_state(void);
-bool get_gui_state(void);
-
-layer_state_t os = _MAC;
-
-// We want to keep track of our current default layer. This starts at COLEMAK. It's easier to keep track this way!
-layer_state_t _layer = _COLEMAK;
-// We also set our max layer. This way I only have to update one variable if I want to add or remove a layer
-layer_state_t _max_layer = _QWERTY;
-
 // Defined keycode macros
-// See Kabit.h
+// See kabit.h
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_COLEMAK] = LAYOUT_wrapper( // **C** COLEMAK BASE LAYER **C**
@@ -109,93 +97,29 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                      _______,  _______,  _______,  _______,   _______,      _______,   _______,   _______,  _______,  _______
  //                                `---------+---------+---------+----------+----------|  |----------+----------+---------+---------+---------'
     ),
+    [_MACRO1] = LAYOUT_wrapper( // Macro Layer 1
+ // ,------------------------------------------------------------.                                              ,------------------------------------------------------------.
+      KC_ESC ,   _____MACRO1_ROW_1L_____                        ,                                                 _____MACRO1_ROW_1R_____                        ,  KC_MUTE,
+ // |----------+---------+---------+---------+---------+---------|                                              |---------+---------+---------+---------+---------+----------|
+      XXXXXXX,   _____MACRO1_ROW_2L_____                        ,                                                 _____MACRO1_ROW_2R_____                        ,  XXXXXXX,
+ // |----------+---------+---------+---------+---------+---------+---------------------.  ,---------------------+---------+---------+---------+---------+---------+----------|
+      XXXXXXX,   _____MACRO1_ROW_3L_____                        ,  KC_DEL ,   KC_LEAD,      KT_CCCV,   KC_LGUI,   _____MACRO1_ROW_3R_____                        ,  XXXXXXX,
+ // `------------------------------+---------+---------+---------+----------+----------|  |----------+----------+---------+---------+---------+------------------------------'
+                                     XXXXXXX,  XXXXXXX,  KC_BSPC,  KC_LSFT,   XXXXXXX,      KC_SPC ,   KC_SPC ,   XXXXXXX,  XXXXXXX,  XXXXXXX
+ //                                `---------+---------+---------+----------+----------|  |----------+----------+---------+---------+---------'
+    ),
+    [_MACRO2] = LAYOUT_wrapper( // Macro Layer 2
+ // ,------------------------------------------------------------.                                              ,------------------------------------------------------------.
+      KC_ESC ,   _____MACROS_XXXXXX_____                        ,                                                 _____MACROS_XXXXXX_____                        ,  KC_MUTE,
+ // |----------+---------+---------+---------+---------+---------|                                              |---------+---------+---------+---------+---------+----------|
+      XXXXXXX,   _____MACROS_XXXXXX_____                        ,                                                 _____MACROS_XXXXXX_____                        ,  XXXXXXX,
+ // |----------+---------+---------+---------+---------+---------+---------------------.  ,---------------------+---------+---------+---------+---------+---------+----------|
+      XXXXXXX,   _____MACROS_XXXXXX_____                        ,  KC_DEL ,   KC_LEAD,      KT_CCCV,   KC_LGUI,   _____MACROS_XXXXXX_____                        ,  XXXXXXX,
+ // `------------------------------+---------+---------+---------+----------+----------|  |----------+----------+---------+---------+---------+------------------------------'
+                                     XXXXXXX,  XXXXXXX,  KC_BSPC,  KC_LSFT,   XXXXXXX,      KC_SPC ,   KC_SPC ,   XXXXXXX,  XXXXXXX,  XXXXXXX
+ //                                `---------+---------+---------+----------+----------|  |----------+----------+---------+---------+---------'
+    ),
 };
-
-void keyboard_post_init_user(void) {
-    debug_enable = true;
-}
-
-bool get_shift_state(void) {
-    return get_mods() & MOD_MASK_SHIFT;
-}
-
-bool get_ctrl_state(void) {
-    return get_mods() & MOD_MASK_CTRL;
-}
-
-bool get_alt_state(void) {
-    return get_mods() & MOD_MASK_ALT;
-}
-
-bool get_gui_state(void) {
-    return get_mods() & MOD_MASK_GUI;
-}
-
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    if (record->event.pressed) {
-        switch (keycode) {
-            case KT_ESZ:
-                // Send shortcut for Eszett (no shifted version)
-                SEND_STRING(SS_RALT("s"));
-                break;
-            case KT_UM_A:
-                // Send shortcut for Umlaut a
-                if (get_shift_state()) {
-                    unregister_code(KC_LSFT);
-                    if (os == _MAC) {
-                        SEND_STRING(SS_RALT("u")"A");
-                    } else {
-                        SEND_STRING(SS_RALT("\"")"A");
-                    }
-                    register_code(KC_LSFT);
-                } else {
-                    if (os == _MAC) {
-                        SEND_STRING(SS_RALT("u")"a");
-                    } else {
-                        SEND_STRING(SS_RALT("\"")"a");
-                    }
-                }
-                break;
-            case KT_UM_O:
-                // Send shortcut for Umlaut o
-                if (get_shift_state()) {
-                    unregister_code(KC_LSFT);
-                    if (os == _MAC) {
-                        SEND_STRING(SS_RALT("u")"O");
-                    } else {
-                        SEND_STRING(SS_RALT("\"")"O");
-                    }
-                    register_code(KC_LSFT);
-                } else {
-                    if (os == _MAC) {
-                        SEND_STRING(SS_RALT("u")"o");
-                    } else {
-                        SEND_STRING(SS_RALT("\"")"o");
-                    }
-                }
-                break;
-            case KT_UM_U:
-                // Send shortcut for Umlaut u
-                if (get_shift_state()) {
-                    unregister_code(KC_LSFT);
-                    if (os == _MAC) {
-                        SEND_STRING(SS_RALT("u")"U");
-                    } else {
-                        SEND_STRING(SS_RALT("\"")"U");
-                    }
-                    register_code(KC_LSFT);
-                } else {
-                    if (os == _MAC) {
-                        SEND_STRING(SS_RALT("u")"u");
-                    } else {
-                        SEND_STRING(SS_RALT("\"")"u");
-                    }
-                }
-                break;
-        }
-    }
-    return true;
-}
 
 //#ifdef OLED_DRIVER_ENABLE
 oled_rotation_t oled_init_user(oled_rotation_t rotation) {
@@ -295,92 +219,6 @@ void oled_task_user(void) {
     }
 }
 //#endif
-
-//#ifdef ENCODER_ENABLE
-bool encoder_update_user(uint8_t index, bool clockwise) {
-    if (index == 1) {
-        // Volume control
-        if (clockwise) {
-            tap_code(KC_VOLU);
-        } else {
-            tap_code(KC_VOLD);
-        }
-    }
-    else if (index == 0) {
-        // Page up/Page down
-        if (clockwise) {
-            tap_code(KC_PGDN);
-        } else {
-            tap_code(KC_PGUP);
-        }
-    }
-    return true;
-}
-//#endif
-
-// LEADER KEY FUNCTIONALITY
-LEADER_EXTERNS();
-
-void matrix_scan_user(void) {
-    LEADER_DICTIONARY() {
-        leading = false;
-        leader_end();
-
-        SEQ_ONE_KEY(KC_D) {
-            // ** TEST
-            SEND_STRING("test...");
-        }
-
-        // ************************* //
-        // ** COMMUNICATE TO HOST ** //
-        SEQ_TWO_KEYS(KC_W, KC_W) {
-            // ** WW -> WEATHER REQ
-            dprintf("");
-        }
-        // ************************* //
-
-        // ************************** //
-        // ** MANAGE OPERATING SYS ** //
-        SEQ_THREE_KEYS(KC_M, KC_A, KC_C) {
-            os = _MAC;
-        }
-        SEQ_THREE_KEYS(KC_W, KC_I, KC_N) {
-            os = _WIN;
-        }
-        SEQ_THREE_KEYS(KC_L, KC_N, KC_X) {
-            os = _LINUX;
-        }
-        // ************************* //
-
-        // *************************** //
-        // ** MANAGE BASE LAYER MAP ** //
-        SEQ_FOUR_KEYS(KC_Q, KC_W, KC_F, KC_P) {
-            // ** QWFP -> QWERTY
-            _layer = _QWERTY;
-            default_layer_set(X_QWERTY);
-            layer_state_set(X_QWERTY);
-        }
-        SEQ_FOUR_KEYS(KC_Q, KC_W, KC_E, KC_R) {
-            // ** QWER -> COLEMAK
-            _layer = _COLEMAK;
-            default_layer_set(X_COLEMAK);
-            layer_state_set(X_COLEMAK);
-        }
-        SEQ_FOUR_KEYS(KC_F, KC_A, KC_S, KC_T) {
-            // ** FAST -> SPEED (MonkeyType)
-            _layer = _SPEED;
-            default_layer_set(X_SPEED);
-            layer_state_set(X_SPEED);
-        }
-        SEQ_FOUR_KEYS(KC_S, KC_L, KC_O, KC_W) {
-            // ** SLOW -> COLEMAK
-            _layer = _COLEMAK;
-            default_layer_set(X_COLEMAK);
-            layer_state_set(X_COLEMAK);
-        }
-        // *************************** //
-    }
-}
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * The next bit of code sets up a virtual serial port with the host machine.
