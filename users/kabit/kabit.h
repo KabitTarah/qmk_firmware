@@ -1,3 +1,9 @@
+#pragma once
+#ifndef USERSPACE
+#define USERSPACE
+
+#include QMK_KEYBOARD_H
+
 enum layers {
     _COLEMAK,
     _QWERTY,
@@ -7,6 +13,7 @@ enum layers {
     _RGHT,
     _DOWN,
 };
+
 
 // Base Layer Masks
 #define X_COLEMAK	1 << _COLEMAK
@@ -20,14 +27,14 @@ enum os_type {
 };
 
 enum custom_keycodes {
-    MAC_UM = NEW_SAFE_RANGE,
+    MAC_UM = SAFE_RANGE,
     VIM_WR,
     KT_CCCV,  // Initiate ctrl-c ctrl-v sequence (OS Specific)
     KT_ESZ,   // Eszett
     KT_UM_A,  // A Umlaut
     KT_UM_U,  // U Umlaut
     KT_UM_O,  // O Umlaut
-}
+};
 
 // Defined keycode macros
 #define DEAD    KC_NO
@@ -64,7 +71,9 @@ enum custom_keycodes {
 #define KQ_J    MT(MOD_LGUI, KC_J)
 #define KQ_K    MT(MOD_LSFT, KC_K)
 #define KQ_L    MT(MOD_LALT, KC_L)
-#define KQ_SCLN MT(MOD_LCTL, KC_SCLN
+#define KQ_SCLN MT(MOD_LCTL, KC_SCLN)
+
+#define LAYOUT_wrapper(...) LAYOUT(__VA_ARGS__)
 
 // !! COLEMAK WITH HOMEROW MODS
 // ??         - LEFT SIDE
@@ -103,18 +112,20 @@ enum custom_keycodes {
 // !! QWERTY WITH HOMEROW MODS
 // ??        - LEFT SIDE
 // .                           +_________+_________+_________+_________+_________+
-#define _____QWERTY_ROW_1L_____ KC_Q    , KC_W    , KC_E    , KC_R    , KC_T
+#define _____QWERTY_ROW_1L_____  KC_Q    , KC_W    , KC_E    , KC_R    , KC_T
 // .                           +_________+_________+_________+_________+_________+
-#define _____QWERTY_HRM_2L_____ KT_A    , KT_S    , KT_D    , KT_F    , KC_G
+#define _____QWERTY_HRM_2L_____  KT_A    , KQ_S    , KQ_D    , KQ_F    , KC_G
 // .                           +_________+_________+_________+_________+_________+
-#define _____QWERTY_HRM_3L_____ KT_Z    , KT_X    , KT_C    , KT_V    , KT_B
+#define _____QWERTY_HRM_3L_____  KT_Z    , KT_X    , KT_C    , KT_V    , KT_B
 // .                           +_________+_________+_________+_________+_________+
 
 // ??        - RIGHT SIDE
 // .                           +_________+_________+_________+_________+_________+
-#define _____QWERTY_ROW_1R_____ KC_Y    , KC_U    , KC_I    , KC_O    , KC_P
+#define _____QWERTY_ROW_1R_____  KC_Y    , KC_U    , KC_I    , KC_O    , KC_P
 // .                           +_________+_________+_________+_________+_________+
-#define _____QWERTY_HRM_2R_____ KC_H    , KT_J    , KT_K    , KT_L    , KT_SCLN
+#define _____QWERTY_HRM_2R_____  KC_H    , KQ_J    , KQ_K    , KQ_L    , KQ_SCLN
 // .                           +_________+_________+_________+_________+_________+
-#define _____QWERTY_HRM_3R_____ KT_N    , KT_M    , KT_COMM , KT_DOT  , KT_QUOT
+#define _____QWERTY_HRM_3R_____  KT_N    , KT_M    , KT_COMM , KT_DOT  , KT_QUOT
 // .                           +_________+_________+_________+_________+_________+
+
+#endif

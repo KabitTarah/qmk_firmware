@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include QMK_KEYBOARD_H
-#include kabit.h
+#include "kabit.h"
 
 bool get_shift_state(void);
 bool get_ctrl_state(void);
@@ -32,7 +32,7 @@ layer_state_t _max_layer = _QWERTY;
 // See Kabit.h
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-    [_COLEMAK] = LAYOUT( // **C** COLEMAK BASE LAYER **C**
+    [_COLEMAK] = LAYOUT_wrapper( // **C** COLEMAK BASE LAYER **C**
  // ,------------------------------------------------------------.                                              ,------------------------------------------------------------.
       XXXXXXX,   _____COLEMAK_ROW_1L_____                       ,                                                 _____COLEMAK_ROW_1R_____                       ,  KC_MUTE,
  // |----------+---------+---------+---------+---------+---------|                                              |---------+---------+---------+---------+---------+----------|
@@ -43,7 +43,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                      KC_LALT,  KC_TAB ,  KC_BSPC,  KC_LSFT,   KC_ESC ,      KC_SPC ,   KC_SPC ,   KC_ENT ,  KC_GRV ,  KC_RALT
  //                                `---------+---------+---------+----------+----------|  |----------+----------+---------+---------+---------'
     ),
-    [_QWERTY] = LAYOUT( // **C** QWERTY BASE LAYER **C**
+    [_QWERTY] = LAYOUT_wrapper( // **C** QWERTY BASE LAYER **C**
  // ,------------------------------------------------------------.                                              ,------------------------------------------------------------.
       XXXXXXX,   _____QWERTY_ROW_1L_____                        ,                                                 _____QWERTY_ROW_1R_____                        ,  KC_MUTE,
  // |----------+---------+---------+---------+---------+---------|                                              |---------+---------+---------+---------+---------+----------|
@@ -54,7 +54,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                      KC_LALT,  KC_TAB ,  KC_BSPC,  KC_LSFT,   KC_ESC ,      KC_SPC ,   KC_SPC ,   KC_ENT ,  KC_GRV ,  KC_RALT
  //                                `---------+---------+---------+----------+----------|  |----------+----------+---------+---------+---------'
     ),
-    [_SPEED] = LAYOUT( // **C** COLEMAK SPEED LAYER **C**
+    [_SPEED] = LAYOUT_wrapper( // **C** COLEMAK SPEED LAYER **C**
  // ,------------------------------------------------------------.                                              ,------------------------------------------------------------.
       KC_ESC ,   _____COLEMAK_ROW_1L_____                       ,                                                 _____COLEMAK_ROW_1R_____                       ,  KC_MUTE,
  // |----------+---------+---------+---------+---------+---------|                                              |---------+---------+---------+---------+---------+----------|
@@ -65,7 +65,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                      XXXXXXX,  XXXXXXX,  KC_BSPC,  KC_LSFT,   XXXXXXX,      KC_SPC ,   KC_SPC ,   XXXXXXX,  XXXXXXX,  XXXXXXX
  //                                `---------+---------+---------+----------+----------|  |----------+----------+---------+---------+---------'
     ),
-    [_UP] = LAYOUT( // **C** Symbols layer **C**
+    [_UP] = LAYOUT_wrapper( // **C** Symbols layer **C**
  // ,------------------------------------------------------------.                                              ,------------------------------------------------------------.
       XXXXXXX,   KC_PERC,  KC_CIRC,  KC_AMPR,  KC_PIPE,  KC_LBRC,                                                 KC_RBRC,  KC_PLUS,  KC_ASTR,  KC_DLR ,  KC_TILD,  KC_MUTE,
  // |----------+---------+---------+---------+---------+---------|                                              |---------+---------+---------+---------+---------+----------|
@@ -76,7 +76,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                      _______,  _______,  _______,  _______,   _______,      _______,   _______,   _______,  _______,  _______
  //                                `---------+---------+---------+----------+----------|  |----------+----------+---------+---------+---------'
     ),
-    [_LEFT] = LAYOUT( // **C** Numpad & Reversed Left Board **C**
+    [_LEFT] = LAYOUT_wrapper( // **C** Numpad & Reversed Left Board **C**
  // ,------------------------------------------------------------.                                              ,------------------------------------------------------------.
       XXXXXXX,   KC_SCLN,  KC_Y   ,  KC_U   ,  KC_L   ,  KC_J   ,                                                 KC_PSLS,  KC_7   ,  KC_8   ,  KC_9   ,  KC_PAST,  KC_MUTE,
  // |----------+---------+---------+---------+---------+---------|                                              |---------+---------+---------+---------+---------+----------|
@@ -87,7 +87,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                      _______,  _______,  _______,  _______,   _______,      KC_LGUI,   _______,   _______,  _______,  _______
  //                                `---------+---------+---------+----------+----------|  |----------+----------+---------+---------+---------'
     ),
-    [_RGHT] = LAYOUT( // **C** Number/symbol row and F-keys **C**
+    [_RGHT] = LAYOUT_wrapper( // **C** Number/symbol row and F-keys **C**
  // ,------------------------------------------------------------.                                              ,------------------------------------------------------------.
       XXXXXXX,   KC_EXLM,  KC_AT  ,  KC_HASH,  KC_DLR ,  KC_PERC,                                                 KC_CIRC,  KC_AMPR,  KC_ASTR,  KC_LPRN,  KC_RPRN,  KC_MUTE,
  // |----------+---------+---------+---------+---------+---------|                                              |---------+---------+---------+---------+---------+----------|
@@ -98,7 +98,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                      _______,  _______,  _______,  _______,   _______,      KC_LGUI,   _______,   _______,  _______,  _______
  //                                `---------+---------+---------+----------+----------|  |----------+----------+---------+---------+---------'
     ),
-    [_DOWN] = LAYOUT( // Movement & Macros
+    [_DOWN] = LAYOUT_wrapper( // Movement & Macros
  // ,------------------------------------------------------------.                                              ,------------------------------------------------------------.
       XXXXXXX,   XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,                                                 XXXXXXX,  XXXXXXX,  KC_UP  ,  XXXXXXX,  XXXXXXX,  KC_MUTE,
  // |----------+---------+---------+---------+---------+---------|                                              |---------+---------+---------+---------+---------+----------|
@@ -297,7 +297,7 @@ void oled_task_user(void) {
 //#endif
 
 //#ifdef ENCODER_ENABLE
-void encoder_update_user(uint8_t index, bool clockwise) {
+bool encoder_update_user(uint8_t index, bool clockwise) {
     if (index == 1) {
         // Volume control
         if (clockwise) {
@@ -314,6 +314,7 @@ void encoder_update_user(uint8_t index, bool clockwise) {
             tap_code(KC_PGUP);
         }
     }
+    return true;
 }
 //#endif
 
