@@ -111,6 +111,11 @@ enum custom_keycodes {
 #define KQ_K    MT(MOD_LSFT, KC_K)
 #define KQ_L    MT(MOD_LALT, KC_L)
 #define KQ_SCLN MT(MOD_LCTL, KC_SCLN)
+// One shot mods
+#define OS_UP   OSL(_UP)
+#define OS_LEFT OSL(_LEFT)
+#define OS_RGHT OSL(_RGHT)
+#define OS_DOWN OSL(_DOWN)
 
 #define LAYOUT_wrapper(...) LAYOUT(__VA_ARGS__)
 
